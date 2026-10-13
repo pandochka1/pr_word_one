@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Студент — Информационные системы и программирование</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+:root{--accent:#6366f1;--accent2:#06b6d4;--surface-glass:rgba(255,255,255,.06);--surface-glass-border:rgba(255,255,255,.08);--surface-glass-hover:rgba(255,255,255,.10);--ink:#f1f5f9;--ink-secondary:#94a3b8;--ink-muted:#64748b;--bg:#0a0a12;--bg-card:rgba(255,255,255,.04);--bg-card-hover:rgba(255,255,255,.08);--line-glass:rgba(255,255,255,.06);--glow-accent:rgba(99,102,241,.25);--shadow-card:0 8px 32px rgba(0,0,0,.4);--radius-card:20px;--radius-sm:12px}
+[data-theme="light"]{--bg:#f0f2f5;--ink:#0b1a2e;--ink-secondary:#4b5b73;--ink-muted:#8494a8;--surface-glass:rgba(255,255,255,.7);--surface-glass-border:rgba(0,0,0,.08);--surface-glass-hover:rgba(255,255,255,.9);--bg-card:rgba(255,255,255,.5);--bg-card-hover:rgba(255,255,255,.8);--line-glass:rgba(0,0,0,.06);--shadow-card:0 8px 32px rgba(0,0,0,.08);--glow-accent:rgba(99,102,241,.1)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 800px 500px at 10% 20%,rgba(99,102,241,.10) 0%,transparent 70%),radial-gradient(ellipse 600px 400px at 85% 60%,rgba(6,182,212,.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+.top-bar{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1.5rem;max-width:1100px;margin:0 auto;position:relative;z-index:10}
+.top-bar .back{display:inline-flex;align-items:center;gap:.35rem;font-size:.82rem;font-weight:600;color:var(--ink-muted);text-decoration:none}
+.top-bar .back:hover{color:var(--accent)}.top-bar .back svg{width:14px;height:14px;fill:currentColor}
+.theme-toggle{background:var(--toggle-bg, rgba(255,255,255,.1));border:none;border-radius:50%;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s,transform .2s;backdrop-filter:blur(12px)}
+.theme-toggle:hover{transform:scale(1.1)}.theme-toggle svg{width:19px;height:19px;fill:var(--ink-secondary)}
+main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.hero{text-align:center;padding:2rem 1.5rem 1rem;max-width:800px;margin:0 auto}
+.hero .chip{display:inline-flex;align-items:center;gap:.35rem;font-size:.78rem;font-weight:600;padding:.3rem .9rem;border-radius:100px;background:var(--surface-glass);border:1px solid var(--surface-glass-border);backdrop-filter:blur(16px);color:var(--ink-muted);margin-bottom:1rem}
+.hero h1{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:900;letter-spacing:-0.03em;background:linear-gradient(135deg,#f1f5f9 0%,#6366f1 50%,#06b6d4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+[data-theme="light"] .hero h1{background:linear-gradient(135deg,#0b1a2e 0%,#6366f1 50%,#06b6d4 100%);-webkit-background-clip:text;background-clip:text}
+.hero .sub{font-size:.95rem;color:var(--ink-secondary);margin-top:.5rem}
+.cards{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:2rem;max-width:600px;margin-left:auto;margin-right:auto}
+.card{background:var(--bg-card);border:1px solid var(--line-glass);border-radius:var(--radius-card);padding:1.5rem;transition:all .3s;text-decoration:none;color:var(--ink);display:block;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--glow-accent) 0%,transparent 50%);opacity:0;transition:opacity .3s;pointer-events:none}
+.card:hover{transform:translateY(-3px);border-color:rgba(99,102,241,.25);box-shadow:0 20px 40px -12px rgba(0,0,0,.5);background:var(--bg-card-hover)}
+.card:hover::before{opacity:1}
+.card .num{font-size:.72rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.03em;margin-bottom:.35rem;display:block}
+.card h3{font-size:.95rem;font-weight:700;line-height:1.3;margin-bottom:.25rem;position:relative;z-index:1}
+.card p{font-size:.82rem;color:var(--ink-secondary);line-height:1.5;position:relative;z-index:1}
+.arrow{margin-top:.6rem;display:flex;justify-content:flex-end}
+.arrow svg{width:28px;height:28px;fill:var(--ink-muted);transition:all .25s}
+.card:hover .arrow svg{fill:var(--accent);transform:translateX(3px)}
+.page-footer{text-align:center;color:var(--ink-muted);font-size:.78rem;padding:2rem 1.5rem;border-top:1px solid var(--line-glass);max-width:1100px;margin:0 auto;position:relative;z-index:1}
+</style></head>
+<body>
+<div class="top-bar">
+  <a class="back" href="../index.html"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Назад</a>
+  <button class="theme-toggle" id="themeToggle" aria-label="Тема"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.34 0 .68-.02 1.01-.06C9.56 20.42 7 16.76 7 12s2.56-8.42 6.01-9.94C12.68 2.02 12.34 2 12 2z"/></svg></button>
+</div>
+<header class="hero">
+  <div class="chip">09.02.07</div>
+  <h1>Информационные системы и программирование</h1>
+  <p class="sub">Лекция для самостоятельного изучения</p>
+</header>
+<main>
+  <div class="cards">
+    <a class="card" href="lekciya1.html">
+      <span class="num">Лекция 1</span>
+      <h3>Понятие информации и информационных технологий</h3>
+      <p>Данные, информация, знания. Способы хранения. Классификация ИТ. Устройства ввода-вывода, smart-устройства. 2 задания</p>
+      <div class="arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+    </a>
+    <a class="card" href="lekciya2.html">
+      <span class="num">Лекция 2</span>
+      <h3>Состав персонального компьютера</h3>
+      <p>Процессоры Intel и AMD, материнская плата, память, накопители, видеокарта, БП. Три сборки с экономическим обоснованием. 2 задания + контрольные вопросы</p>
+      <div class="arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+    </a>
+    <a class="card" href="lekciya3.html">
+      <span class="num">Лекция 3</span>
+      <h3>Тема 1.2. Подходы к измерению информации</h3>
+      <p>Алфавитный, содержательный и вероятностный подходы. Единицы измерения. Передача, хранение, архивация. Разбор задач ЕГЭ/ОГЭ + 7 задач для сам. работы</p>
+      <div class="arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+    </a>
+    <a class="card" href="lekciya4.html">
+      <span class="num">Лекция 4</span>
+      <h3>Текстовые процессоры</h3>
+      <p>Создание и форматирование документа. Разметка, шрифты, списки, таблицы, специальные возможности. Веб-инструменты: Яндекс Документы и Google Docs. 3 задания</p>
+      <div class="arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+    </a>
+    <a class="card" href="praktica-word.html">
+      <span class="num">Практическая работа</span>
+      <h3>Word: оформление документов по ГОСТ</h3>
+      <p>5 заданий: титульный лист, абзацы и шрифты, стили и оглавление, списки, колонтитулы и PDF. Входные тексты по специальности + референсы</p>
+      <div class="arrow"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+    </a>
+  </div>
+</main>
+<footer class="page-footer">09.02.07 Информационные системы и программирование &copy; 2026</footer>
+<script>(function(){var b=document.getElementById('themeToggle'),d=document.documentElement;function e(v){d.setAttribute('data-theme',v);localStorage.setItem('portal-theme-v2',v);b.innerHTML=v==='dark'?'<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.59 2.06-2.48 3.56-4.74 3.56-2.76 0-5-2.24-5-5 0-2.26 1.5-4.15 3.56-4.74C12.92 3.04 12.46 3 12 3z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.34 0 .68-.02 1.01-.06C9.56 20.42 7 16.76 7 12s2.56-8.42 6.01-9.94C12.68 2.02 12.34 2 12 2z"/></svg>'};b.addEventListener('click',function(){var cur=d.getAttribute('data-theme');e(cur==='dark'?'light':'dark')});var saved=localStorage.getItem('portal-theme-v2');e(saved?saved:'dark')})()</script>
+</body>
+</html>

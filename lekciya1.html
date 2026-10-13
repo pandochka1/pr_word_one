@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 1 — Информация и ИТ (09.02.07)</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#6366f1;--accent2:#06b6d4;--surface-glass:rgba(255,255,255,.06);--surface-glass-border:rgba(255,255,255,.08);--surface-glass-hover:rgba(255,255,255,.10);--ink:#f1f5f9;--ink-secondary:#94a3b8;--ink-muted:#64748b;--bg:#0a0a12;--bg-card:rgba(255,255,255,.04);--bg-card-hover:rgba(255,255,255,.08);--line-glass:rgba(255,255,255,.06);--glow-accent:rgba(99,102,241,.25);--shadow-card:0 8px 32px rgba(0,0,0,.4);--radius-card:20px;--radius-sm:12px;--toggle-bg:rgba(255,255,255,.1)}
+[data-theme="light"]{--bg:#f0f2f5;--ink:#0b1a2e;--ink-secondary:#4b5b73;--ink-muted:#8494a8;--surface-glass:rgba(255,255,255,.7);--surface-glass-border:rgba(0,0,0,.08);--surface-glass-hover:rgba(255,255,255,.9);--toggle-bg:rgba(0,0,0,.08);--bg-card:rgba(255,255,255,.5);--bg-card-hover:rgba(255,255,255,.8);--line-glass:rgba(0,0,0,.06);--shadow-card:0 8px 32px rgba(0,0,0,.08);--glow-accent:rgba(99,102,241,.1)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 800px 500px at 10% 20%,rgba(99,102,241,.10) 0%,transparent 70%),radial-gradient(ellipse 600px 400px at 85% 60%,rgba(6,182,212,.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+.top-bar{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1.5rem;max-width:940px;margin:0 auto;position:relative;z-index:10}
+.top-bar .back{display:inline-flex;align-items:center;gap:.35rem;font-size:.82rem;font-weight:600;color:var(--ink-muted);text-decoration:none}
+.top-bar .back:hover{color:var(--accent)}.top-bar .back svg{width:14px;height:14px;fill:currentColor}
+.theme-toggle{background:var(--toggle-bg);border:none;border-radius:50%;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s,transform .2s;backdrop-filter:blur(12px)}
+.theme-toggle:hover{transform:scale(1.1)}.theme-toggle svg{width:19px;height:19px;fill:var(--ink-secondary)}
+main{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:0 1.5rem 4rem}
+.hero{text-align:center;padding:2.5rem 1.5rem 2rem}.hero .chip{display:inline-flex;align-items:center;gap:.35rem;font-size:.78rem;font-weight:600;padding:.3rem .9rem;border-radius:100px;background:var(--surface-glass);border:1px solid var(--surface-glass-border);backdrop-filter:blur(16px);color:var(--ink-muted);margin-bottom:1.25rem}
+.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;letter-spacing:-0.03em;line-height:1.12;background:linear-gradient(135deg,#f1f5f9 0%,#6366f1 50%,#06b6d4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+[data-theme="light"] .hero h1{background:linear-gradient(135deg,#0b1a2e 0%,#6366f1 50%,#06b6d4 100%);-webkit-background-clip:text;background-clip:text}
+.hero .sub{font-size:.95rem;color:var(--ink-secondary);margin-top:.5rem}.hero .meta{font-size:.78rem;color:var(--ink-muted);margin-top:.6rem;display:flex;justify-content:center;gap:1.25rem}
+.card{background:var(--bg-card);border:1px solid var(--line-glass);border-radius:var(--radius-card);padding:1.5rem 1.75rem;margin-bottom:1.25rem;box-shadow:var(--shadow-card)}
+.card p,.card li,.card .card-body{text-align:justify}.card p{line-height:1.75}.card p+p{margin-top:.6rem}
+.card ul,.card ol{padding-left:1.75rem;margin-top:.4rem}.card li{margin-bottom:.3rem;line-height:1.7}
+.card-header{display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem}
+.card-header .icon-box{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--surface-glass);border:1px solid var(--surface-glass-border);color:var(--accent);font-weight:700}
+.card h3{font-size:1rem;font-weight:700}
+.section-title{font-size:1.2rem;font-weight:800;margin:2rem 0 .75rem;letter-spacing:-0.01em;color:var(--accent)}.section-title.first{margin-top:0}
+.def-block{border-left:3px solid var(--accent);background:var(--surface-glass);backdrop-filter:blur(12px);padding:.85rem 1.25rem;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:.85rem 0;line-height:1.65;font-size:.92rem}
+.def-block .term{font-weight:700;color:var(--accent);display:block;margin-bottom:.2rem}
+.def-block,.def-block p{text-align:justify}
+.info-box{border-left:3px solid var(--accent);background:var(--surface-glass);backdrop-filter:blur(12px);padding:.8rem 1.2rem;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:1rem 0;font-size:.9rem;line-height:1.65}
+.info-box strong{color:var(--accent)}.info-box.neon{border-left-color:var(--accent2)}.info-box.neon strong{color:var(--accent2)}
+.info-box,.info-box p{text-align:justify}
+.term-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.75rem;margin:.75rem 0}
+.term-card{background:var(--bg-card);border:1px solid var(--line-glass);border-radius:var(--radius-sm);padding:1rem 1.1rem;transition:all .25s;cursor:default}
+.term-card:hover{border-color:rgba(99,102,241,.25);box-shadow:0 0 0 3px var(--glow-accent)}
+.term-card .label{font-weight:600;font-size:.88rem;display:block;margin-bottom:.25rem;color:var(--accent)}
+.term-card .desc{font-size:.83rem;color:var(--ink-secondary);line-height:1.5;text-align:justify}
+.accordion-item{border:1px solid var(--line-glass);border-radius:var(--radius-sm);margin-bottom:.45rem;overflow:hidden;background:var(--bg-card)}
+.accordion-trigger{width:100%;border:none;background:transparent;padding:.8rem 1.25rem;font:600 .92rem/1.4 'Inter',system-ui;color:var(--ink);text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.accordion-trigger:hover{background:var(--surface-glass-hover)}
+.accordion-trigger .arrow{font-size:.75rem;color:var(--ink-muted);transition:transform .25s;flex-shrink:0;margin-left:1rem}
+.accordion-item.open .accordion-trigger .arrow{transform:rotate(180deg)}
+.accordion-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.accordion-item.open .accordion-body{max-height:2000px}
+.accordion-body-inner{padding:0 1.25rem 1rem;border-top:1px solid var(--line-glass);padding-top:.7rem;font-size:.9rem;line-height:1.65}
+.accordion-body-inner p{margin-bottom:.5rem;text-align:justify}.accordion-body-inner ul{padding-left:1.75rem;margin-top:.3rem}
+.task-list{counter-reset:task}
+.task-card{background:var(--bg-card);border:1px solid var(--line-glass);border-radius:var(--radius-card);padding:1.25rem 1.5rem;margin-bottom:.85rem;transition:all .25s}
+.task-card:hover{border-color:rgba(99,102,241,.25);box-shadow:0 0 0 3px var(--glow-accent)}
+.task-card::before{counter-increment:task;content:"Задание " counter(task);display:inline-block;font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--accent);margin-bottom:.35rem}
+.task-card .task-title{font-weight:600;font-size:.95rem;margin-bottom:.35rem}
+.task-card .task-body{font-size:.9rem;line-height:1.65;text-align:justify}.task-card .task-body ul,.task-card .task-body ol{padding-left:1.75rem;margin-top:.35rem}.task-card .task-body li{margin-bottom:.25rem}
+.task-card .task-meta{display:flex;gap:1rem;margin-top:.7rem;flex-wrap:wrap}
+.badge.level{background:var(--surface-glass);color:var(--accent);border:1px solid rgba(99,102,241,.15)}
+.badge.format{background:var(--surface-glass);color:var(--ink-muted);border:1px solid var(--line-glass)}
+.task-card .task-meta .badge{display:inline-flex;font-size:.75rem;font-weight:500;padding:.35rem .85rem;border-radius:20px}
+.table-wrap{overflow-x:auto;margin:.75rem 0}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead th{background:var(--surface-glass);font-weight:600;text-align:left;padding:.55rem .7rem;border-bottom:1px solid var(--accent)}
+td{padding:.5rem .7rem;border-bottom:1px solid var(--line-glass);vertical-align:top}
+tbody tr:hover{background:var(--surface-glass-hover)}td:first-child{font-weight:500}
+.section-nav{display:flex;justify-content:space-between;gap:.5rem;margin:1.25rem 0}
+.section-nav a{font-size:.85rem;font-weight:500;color:var(--accent);text-decoration:none;padding:.3rem .55rem;border-radius:6px}
+.section-nav a:hover{background:var(--surface-glass)}
+.answer-block{border:1px solid var(--line-glass);border-radius:var(--radius-sm);margin-bottom:.75rem;overflow:hidden;background:var(--bg-card)}
+.answer-trigger{width:100%;border:none;background:transparent;padding:.85rem 1.25rem;font:600 .92rem/1.4 'Inter',system-ui;color:var(--ink);text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.answer-trigger:hover{background:var(--surface-glass-hover)}
+.answer-trigger .arrow{font-size:.8rem;color:var(--ink-muted);transition:transform .25s;flex-shrink:0;margin-left:1rem}
+.answer-block.open .answer-trigger .arrow{transform:rotate(180deg)}
+.answer-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.answer-block.open .answer-body{max-height:5000px}
+.answer-body-inner{padding:0 1.25rem 1.15rem;border-top:1px solid var(--line-glass);padding-top:.75rem;font-size:.92rem;line-height:1.65;text-align:justify}
+.answer-body-inner p{margin-bottom:.5rem}.answer-body-inner ul{padding-left:1.75rem;margin-top:.4rem}
+.answer-body-inner .hint{display:block;margin-top:.75rem;padding:.6rem .85rem;background:var(--surface-glass);border-radius:6px;font-size:.85rem;color:var(--ink-muted);text-align:justify}
+.answer-body-inner .hint strong{color:var(--accent)}
+.page-footer{text-align:center;color:var(--ink-muted);font-size:.78rem;padding:2rem 1.5rem;border-top:1px solid var(--line-glass);margin-top:2rem}
+@media(max-width:640px){.hero{padding:1.5rem 1rem}.card{padding:1.1rem 1.2rem}.term-grid{grid-template-columns:1fr}}
+@media print{body{background:#fff;font-size:13px;color:#000}.top-bar{display:none}.card,.task-card{break-inside:avoid;background:#fff!important}.accordion-body,.answer-body{max-height:none!important}.hero h1{-webkit-text-fill-color:#0b1a2e}}
+.card ul,.task-card .task-body ul,.answer-body-inner ul,.accordion-body-inner ul,.tool-card .pros{list-style:none;padding-left:2.15rem}
+.card ul>li,.task-card .task-body ul>li,.answer-body-inner ul>li,.accordion-body-inner ul>li,.tool-card .pros>li{position:relative}
+.card ul>li::before,.task-card .task-body ul>li::before,.answer-body-inner ul>li::before,.accordion-body-inner ul>li::before,.tool-card .pros>li::before{content:"\2014";position:absolute;left:-1.5rem;color:var(--accent);font-weight:700}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <a class="back" href="../index.html"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Назад</a>
+  <button class="theme-toggle" id="themeToggle" aria-label="Тема"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.34 0 .68-.02 1.01-.06C9.56 20.42 7 16.76 7 12s2.56-8.42 6.01-9.94C12.68 2.02 12.34 2 12 2z"/></svg></button>
+</div>
+<header class="hero">
+  <div class="chip">09.02.07 &mdash; Информационные системы и программирование</div>
+  <h1>Понятие информации и информационных технологий</h1>
+  <p class="sub">Способы восприятия и хранения. Классификация ИТ. Устройства ввода/вывода. Smart-устройства</p>
+  <div class="meta"><span>Лекция 1</span><span>90 минут</span></div>
+</header>
+<main>
+<nav class="card">
+  <h3>Содержание</h3>
+  <ol style="padding-left:1.25rem;margin-top:.5rem">
+    <li style="margin-bottom:.25rem"><a href="#s1" style="color:var(--accent);text-decoration:none">Понятие информации. Данные, информация, знания</a></li>
+    <li style="margin-bottom:.25rem"><a href="#s2" style="color:var(--accent);text-decoration:none">Способы восприятия и хранения</a></li>
+    <li style="margin-bottom:.25rem"><a href="#s3" style="color:var(--accent);text-decoration:none">ИТ: понятие, классификация, задачи</a></li>
+    <li style="margin-bottom:.25rem"><a href="#s4" style="color:var(--accent);text-decoration:none">Устройства ввода и вывода</a></li>
+    <li style="margin-bottom:.25rem"><a href="#s5" style="color:var(--accent);text-decoration:none">Smart-устройства</a></li>
+    <li><a href="#s6" style="color:var(--accent);text-decoration:none">Самостоятельное задание</a></li>
+  </ol>
+</nav>
+<div class="def-block"><span class="term">Ключевые сокращения</span> АИС (автоматизированная информационная система), БД (база данных), API (Application Programming Interface), URL (Uniform Resource Locator), ИТ (IT — Information Technology), ОС (операционная система), ПО (программное обеспечение), UI (User Interface), UX (User Experience)</div>
+<div class="section-nav"><a href="#s1">Начать изучение &rarr;</a></div>
+
+<h2 class="section-title first" id="s1">1. Понятие информации. Данные, информация, знания</h2>
+<div class="card">
+  <p>Термин <strong>информация</strong> происходит от латинского <em>informatio</em> — разъяснение, изложение, осведомлённость. В широком смысле информация — это сведения об окружающем мире и протекающих в нём процессах, которые воспринимаются человеком или специальными устройствами.</p>
+  <p>В сфере информационных систем и программирования информация — это осмысленные данные, представленные в форме, пригодной для передачи, обработки и хранения. Различают три взаимосвязанных понятия:</p>
+</div>
+<div class="term-grid">
+  <div class="term-card"><span class="label">Данные (Data)</span><span class="desc">Совокупность зафиксированных сигналов, символов или чисел, не имеющих смысла вне контекста. Пример: число &laquo;404&raquo; — это данные; это может быть HTTP-статус (Not Found), номер аудитории или цена товара.</span></div>
+  <div class="term-card"><span class="label">Информация (Information)</span><span class="desc">Данные, помещённые в контекст и наделённые смыслом. Пример: &laquo;Сервер вернул HTTP-код 404 (Not Found), значит, запрашиваемая страница не существует&raquo;.</span></div>
+  <div class="term-card"><span class="label">Знания (Knowledge)</span><span class="desc">Структурированная информация, проверенная практикой и пригодная для принятия решений. Пример: &laquo;Если при запросе к API возвращается 404, необходимо проверить правильность URL в коде&raquo;.</span></div>
+</div>
+<div class="def-block"><span class="term">Информация (в контексте АИС)</span> Это совокупность данных, обработанных и организованных так, чтобы они могли быть использованы для анализа, принятия решений и управления. В АИС информация хранится в базах данных (БД), обрабатывается серверными приложениями и предоставляется пользователю через интерфейс (API, веб-интерфейс или десктопное приложение).</div>
+<div class="info-box"><strong>Пример для разработчика ПО:</strong> когда пользователь вводит логин и пароль в форму аутентификации, эти символы — <strong>данные</strong>. После проверки на соответствие записи в БД система возвращает сообщение &laquo;Вход выполнен&raquo; — это <strong>информация</strong>. А правило &laquo;Пароль должен содержать не менее 8 символов, включая цифры и буквы разного регистра&raquo; — это <strong>знание</strong>, заложенное в бизнес-логику приложения.</div>
+<div class="section-nav"><a href="#s2">Далее: Способы восприятия и хранения &rarr;</a><a href="#">К началу</a></div>
+
+<h2 class="section-title" id="s2">2. Способы восприятия и хранения информации</h2>
+<div class="card">
+  <h3 style="font-size:1rem;font-weight:700;color:var(--accent);margin-bottom:.4rem">Способы восприятия</h3>
+  <p>Для специалиста в области ИС важно понимать, что информация может существовать в различных формах:</p>
+  <ul><li><strong>Визуальная</strong> — текст, изображения, видео, интерфейсы. Основы UI/UX.</li><li><strong>Аудиальная</strong> — звук, речь. ASR, IVR.</li><li><strong>Тактильная</strong> — осязание. Haptic feedback, сенсорные экраны.</li><li><strong>Цифровая (машинная)</strong> — двоичный код. Любая информация преобразуется в двоичный код для обработки процессором.</li></ul>
+</div>
+<div class="card">
+  <h3 style="font-size:1rem;font-weight:700;color:var(--accent);margin-bottom:.4rem">Способы хранения</h3>
+  <div class="accordion">
+    <div class="accordion-item open"><button class="accordion-trigger">RAM (Random Access Memory) <span class="arrow">&#9660;</span></button><div class="accordion-body"><div class="accordion-body-inner"><p>Энергозависимая память. В современных АИС рекомендуется от 16 ГБ RAM для серверов приложений.</p><p><strong>Пример:</strong> при запуске IDE (VS Code, IntelliJ IDEA) её код загружается из SSD в RAM.</p></div></div></div>
+    <div class="accordion-item"><button class="accordion-trigger">Постоянное хранение (SSD / HDD) <span class="arrow">&#9660;</span></button><div class="accordion-body"><div class="accordion-body-inner"><p>SSD — твердотельный накопитель. HDD — жёсткий диск.</p><p><strong>Пример:</strong> СУБД PostgreSQL хранит таблицы на SSD для быстрых операций.</p></div></div></div>
+    <div class="accordion-item"><button class="accordion-trigger">Облачное хранение (Cloud Storage) <span class="arrow">&#9660;</span></button><div class="accordion-body"><div class="accordion-body-inner"><p>Данные на удалённых серверах (Yandex Object Storage, AWS S3).</p><p><strong>Пример:</strong> файлы статики (CSS, JS, изображения) размещаются в объектном хранилище.</p></div></div></div>
+  </div>
+</div>
+<div class="section-nav"><a href="#s3">Далее: ИТ &rarr;</a><a href="#s1">&larr; Назад</a></div>
+
+<h2 class="section-title" id="s3">3. Информационные технологии (ИТ): понятие, классификация, задачи</h2>
+<div class="def-block"><span class="term">ИТ (IT — Information Technology, информационные технологии)</span> Совокупность методов, процессов и программно-технических средств для сбора, обработки, хранения, передачи и представления информации с целью снижения трудоёмкости и повышения эффективности.</div>
+<div class="card">
+  <h3 style="font-size:1rem;font-weight:700;color:var(--accent);margin-bottom:.5rem">Классификация ИТ</h3>
+  <div class="table-wrap">
+    <table><thead><tr><th>Признак</th><th>Виды ИТ</th><th>Примеры</th></tr></thead>
+    <tbody><tr><td>По типу информации</td><td>Текстовые, табличные, графические, мультимедийные</td><td>NLP, Computer Vision, DSP</td></tr>
+    <tr><td>По степени автоматизации</td><td>Ручные, автоматизированные, автоматические</td><td>CI/CD, автотесты</td></tr>
+    <tr><td>По сфере применения</td><td>Офисные, промышленные, образовательные</td><td>ERP, CRM, LMS</td></tr>
+    <tr><td>По архитектуре</td><td>Десктопные, веб, мобильные, облачные</td><td>SPA на React, Flutter, Spring Boot</td></tr></tbody></table>
+  </div>
+  <h3 style="font-size:1rem;font-weight:700;color:var(--accent);margin:1.25rem 0 .5rem">Основные задачи ИТ в АИС</h3>
+  <div class="term-grid">
+    <div class="term-card"><span class="label">Сбор данных</span><span class="desc">Из веб-форм, API, IoT-датчиков. Парсеры, веб-хуки, Kafka.</span></div>
+    <div class="term-card"><span class="label">Обработка данных</span><span class="desc">Валидация, фильтрация, агрегация. Java, Python, C#, SQL, ETL.</span></div>
+    <div class="term-card"><span class="label">Хранение данных</span><span class="desc">СУБД: PostgreSQL, MySQL, MongoDB, Redis.</span></div>
+    <div class="term-card"><span class="label">Передача данных</span><span class="desc">HTTP/HTTPS, gRPC, WebSocket, REST/SOAP API.</span></div>
+    <div class="term-card"><span class="label">Представление</span><span class="desc">UI: HTML/CSS/JS, WPF, Qt, Electron, Grafana.</span></div>
+    <div class="term-card"><span class="label">Защита информации</span><span class="desc">AES, RSA, JWT, OAuth 2.0, антивирусы, бэкапы.</span></div>
+  </div>
+</div>
+<div class="section-nav"><a href="#s4">Далее: Устройства ввода/вывода &rarr;</a><a href="#s2">&larr; Назад</a></div>
+
+<h2 class="section-title" id="s4">4. Основные устройства ввода и вывода</h2>
+<div class="card"><p>Устройства ввода-вывода (I/O) обеспечивают взаимодействие пользователя с АИС. Драйверы преобразуют физические сигналы в цифровые данные и обратно.</p></div>
+<div class="term-grid">
+  <div class="term-card"><span class="label">Клавиатура</span><span class="desc">Ввод текста, команд ОС, заполнение форм.</span></div>
+  <div class="term-card"><span class="label">Мышь / Тачпад</span><span class="desc">Управление курсором. Ключевое для IDE и администрирования.</span></div>
+  <div class="term-card"><span class="label">Микрофон</span><span class="desc">Ввод звука. Голосовые интерфейсы, ASR, видеоконференции.</span></div>
+  <div class="term-card"><span class="label">Веб-камера</span><span class="desc">Ввод видео. Видеозвонки, биометрия, QR-сканеры.</span></div>
+  <div class="term-card"><span class="label">Сканер</span><span class="desc">Преобразование бумажных документов. OCR.</span></div>
+  <div class="term-card"><span class="label">Сенсорный экран</span><span class="desc">Ввод касанием. POS-терминалы, киоски, мобильные приложения.</span></div>
+</div>
+<div class="term-grid">
+  <div class="term-card"><span class="label">Монитор</span><span class="desc">Визуальное отображение. Разрешение 2K/4K, цветовой охват.</span></div>
+  <div class="term-card"><span class="label">Принтер</span><span class="desc">Вывод на бумагу. Печать отчётов, накладных, актов.</span></div>
+  <div class="term-card"><span class="label">Колонки / Наушники</span><span class="desc">Вывод звука. Мультимедийные АИС, голосовые помощники.</span></div>
+  <div class="term-card"><span class="label">Проектор</span><span class="desc">Проецирование. Демонстрация ПО, презентации.</span></div>
+</div>
+<div class="info-box neon"><strong>Для разработчика:</strong> веб-приложения — responsive design. Десктопные — горячие клавиши, печать, WebRTC для аудио/видео.</div>
+<div class="section-nav"><a href="#s5">Далее: Smart-устройства &rarr;</a><a href="#s3">&larr; Назад</a></div>
+
+<h2 class="section-title" id="s5">5. Современные smart-устройства</h2>
+<div class="def-block"><span class="term">Smart-устройство (Smart Device)</span> Устройство с процессором, памятью, датчиками и сетевым подключением, способное собирать данные, обрабатывать их и выполнять действия.</div>
+<div class="card"><p>Smart-устройства объединяют функции ввода, вывода и обработки. Программирование таких устройств — направление IoT.</p></div>
+<div class="term-grid">
+  <div class="term-card"><span class="label">Смартфон</span><span class="desc">Платформа для iOS/Android. GPS, акселерометр, гироскоп.</span></div>
+  <div class="term-card"><span class="label">Смарт-часы</span><span class="desc">watchOS, Wear OS. Push-уведомления через API.</span></div>
+  <div class="term-card"><span class="label">Умная колонка</span><span class="desc">Алиса, Салют. Разработка навыков через Yandex Dialogs API.</span></div>
+  <div class="term-card"><span class="label">IoT-устройства</span><span class="desc">Лампы, розетки, термостаты. Протоколы MQTT, CoAP.</span></div>
+  <div class="term-card"><span class="label">Smart-TV</span><span class="desc">Tizen, webOS, Android TV. Digital signage.</span></div>
+  <div class="term-card"><span class="label">POS-терминалы</span><span class="desc">Приём оплаты. Интеграция через API эквайеров. PCI DSS.</span></div>
+</div>
+<div class="info-box"><strong>Пример интеграции:</strong> система &laquo;Умный склад&raquo; (WMS) использует IoT-датчики, smart-весы, ТСД на Android. Данные через MQTT в АИС, уведомления через Telegram API.</div>
+<div class="section-nav"><a href="#s6">Далее: Задание &rarr;</a><a href="#s4">&larr; Назад</a></div>
+
+<h2 class="section-title" id="s6">6. Самостоятельные задания</h2>
+<div class="task-list">
+
+  <div class="task-card">
+    <div class="task-title">Классификация ИТ по описанию</div>
+    <div class="task-body">
+      <p>Определите, к какому типу ИТ (информационной технологии) относится каждая ситуация. Для каждой запишите: номер, тип ИТ, обоснование (1-2 предложения). Используйте классификацию из лекции.</p>
+      <ol>
+        <li>Бухгалтер ежемесячно вручную переносит цифры из накладных в Excel-таблицу.</li>
+        <li>Разработчик настроил GitLab CI/CD — при каждом пуше в main код автоматически собирается, тестируется и развёртывается на сервер.</li>
+        <li>Программа на Python каждую минуту забирает курс валют через API банка, сохраняет в PostgreSQL и при изменении более чем на 1 % отправляет уведомление в Telegram.</li>
+        <li>Студент печатает реферат на принтере после набора текста в Word.</li>
+        <li>Мобильное приложение интернет-магазина передаёт данные о заказе на сервер через REST API, сервер записывает их в базу данных и отправляет подтверждение.</li>
+      </ol>
+    </div>
+    <div class="task-meta"><span class="badge level">базовый уровень</span><span class="badge format">классификация + обоснование</span></div>
+  </div>
+
+  <div class="task-card">
+    <div class="task-title">Сравнение устройств хранения данных</div>
+    <div class="task-body">
+      <p>Заполните сравнительную таблицу трёх типов устройств хранения: <strong>RAM</strong>, <strong>SSD</strong> и <strong>HDD</strong>. Критерии сравнения:</p>
+      <ul>
+        <li>энергозависимость (да/нет);</li>
+        <li>скорость чтения/записи;</li>
+        <li>типичный объём;</li>
+        <li>для каких задач в АИС используется;</li>
+        <li>пример использования из практики разработки.</li>
+      </ul>
+      <p>Дополнительно укажите, какое устройство вы выбрали бы для хранения базы данных PostgreSQL на production-сервере и почему.</p>
+    </div>
+    <div class="task-meta"><span class="badge level">базовый уровень</span><span class="badge format">таблица + обоснование</span></div>
+  </div>
+
+</div>
+</main>
+<footer class="page-footer">09.02.07 Информационные системы и программирование &copy; 2026</footer>
+<script>(function(){var btn=document.getElementById('themeToggle'),doc=document.documentElement;function set(v){doc.setAttribute('data-theme',v);localStorage.setItem('portal-theme-v2',v);btn.innerHTML=v==='dark'?'<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.59 2.06-2.48 3.56-4.74 3.56-2.76 0-5-2.24-5-5 0-2.26 1.5-4.15 3.56-4.74C12.92 3.04 12.46 3 12 3z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.34 0 .68-.02 1.01-.06C9.56 20.42 7 16.76 7 12s2.56-8.42 6.01-9.94C12.68 2.02 12.34 2 12 2z"/></svg>'};btn.addEventListener('click',function(){set(doc.getAttribute('data-theme')==='dark'?'light':'dark')});var s=localStorage.getItem('portal-theme-v2');set(s?s:'dark');document.querySelectorAll('.accordion-trigger, .answer-trigger').forEach(function(t){t.addEventListener('click',function(){var i=t.closest('.accordion-item, .answer-block');if(i)i.classList.toggle('open')})});document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})})})();</script>
+</body>
+</html>

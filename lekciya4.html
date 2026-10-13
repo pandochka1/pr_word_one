@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Лекция 4 — Текстовые процессоры (09.02.07)</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#6366f1;--accent2:#06b6d4;--accent3:#a855f7;--surface-glass:rgba(255,255,255,.06);--surface-glass-border:rgba(255,255,255,.08);--surface-glass-hover:rgba(255,255,255,.10);--ink:#f1f5f9;--ink-secondary:#94a3b8;--ink-muted:#64748b;--bg:#0a0a12;--bg-card:rgba(255,255,255,.04);--bg-card-hover:rgba(255,255,255,.08);--line-glass:rgba(255,255,255,.06);--glow-accent:rgba(99,102,241,.25);--glow-cyan:rgba(6,182,212,.15);--glow-purple:rgba(168,85,247,.15);--shadow-card:0 8px 32px rgba(0,0,0,.4);--radius-card:20px;--radius-sm:12px;--toggle-bg:rgba(255,255,255,.1);--hero-grad1:#f1f5f9;--hero-grad2:#6366f1;--hero-grad3:#06b6d4;--link:#818cf8}
+[data-theme="light"]{--bg:#eef1f6;--ink:#111827;--ink-secondary:#4b5b73;--ink-muted:#8494a8;--surface-glass:rgba(255,255,255,.75);--surface-glass-border:rgba(15,23,42,.10);--surface-glass-hover:rgba(255,255,255,.95);--bg-card:rgba(255,255,255,.65);--bg-card-hover:rgba(255,255,255,.9);--line-glass:rgba(15,23,42,.10);--glow-accent:rgba(99,102,241,.15);--glow-cyan:rgba(6,182,212,.10);--glow-purple:rgba(168,85,247,.08);--shadow-card:0 8px 32px rgba(0,0,0,.08);--toggle-bg:rgba(15,23,42,.08);--hero-grad1:#111827;--hero-grad2:#6366f1;--hero-grad3:#06b6d4;--link:#4f46e5}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 800px 500px at 10% 20%,var(--glow-accent) 0%,transparent 70%),radial-gradient(ellipse 600px 400px at 85% 60%,var(--glow-cyan) 0%,transparent 70%),radial-gradient(ellipse 500px 400px at 50% 90%,var(--glow-purple) 0%,transparent 70%);pointer-events:none;z-index:0}
+.top-bar{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1.5rem;max-width:960px;margin:0 auto;position:relative;z-index:10}
+.top-bar .back{display:inline-flex;align-items:center;gap:.35rem;font-size:.82rem;font-weight:600;color:var(--ink-muted);text-decoration:none}
+.top-bar .back:hover{color:var(--accent)}.top-bar .back svg{width:14px;height:14px;fill:currentColor}
+.theme-toggle{background:var(--toggle-bg);border:none;border-radius:50%;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s,transform .2s;backdrop-filter:blur(12px)}
+.theme-toggle:hover{transform:scale(1.1)}.theme-toggle svg{width:19px;height:19px;fill:var(--ink-secondary)}
+main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
+.hero{text-align:center;padding:2.5rem 1.5rem 2rem}
+.hero .chip{display:inline-flex;align-items:center;gap:.35rem;font-size:.78rem;font-weight:600;padding:.3rem .9rem;border-radius:100px;background:var(--surface-glass);border:1px solid var(--surface-glass-border);backdrop-filter:blur(16px);color:var(--ink-muted);margin-bottom:1.25rem}
+.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;letter-spacing:-0.03em;line-height:1.12;background:linear-gradient(135deg,var(--hero-grad1) 0%,var(--hero-grad2) 50%,var(--hero-grad3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .sub{font-size:.95rem;color:var(--ink-secondary);margin-top:.5rem}.hero .meta{font-size:.78rem;color:var(--ink-muted);margin-top:.6rem;display:flex;justify-content:center;gap:1.25rem;flex-wrap:wrap}
+.card{background:var(--bg-card);border:1px solid var(--line-glass);border-radius:var(--radius-card);padding:1.5rem 1.75rem;margin-bottom:1.25rem;box-shadow:var(--shadow-card)}
+.card p,.card li,.def-block p,.answer-body-inner p{text-align:justify}
+.card p{line-height:1.8}.card p+p{margin-top:.65rem}
+.card ul,.card ol{padding-left:1.75rem;margin-top:.4rem}.card li{margin-bottom:.3rem;line-height:1.7;padding-left:.15rem}
+.section-title{font-size:1.25rem;font-weight:800;margin:2rem 0 .6rem;letter-spacing:-0.01em;color:var(--accent)}.section-title.first{margin-top:0}
+.card h3{font-size:1rem;font-weight:700;margin-bottom:.35rem;color:var(--ink)}
+.def-block{border-left:3px solid var(--accent);background:var(--surface-glass);backdrop-filter:blur(12px);padding:.85rem 1.25rem;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:.85rem 0;line-height:1.65;font-size:.92rem}
+.def-block .term{font-weight:700;color:var(--accent);display:block;margin-bottom:.2rem}
+.def-block.cyan{border-left-color:var(--accent2)}
+.def-block.cyan .term{color:var(--accent2)}
+.info-box{border-left:3px solid var(--accent);background:var(--surface-glass);backdrop-filter:blur(12px);padding:.8rem 1.2rem;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:1rem 0;font-size:.9rem;line-height:1.65;text-align:justify}
+.info-box strong{color:var(--accent)}.info-box.cyan{border-left-color:var(--accent2)}.info-box.cyan strong{color:var(--accent2)}.info-box.purple{border-left-color:var(--accent3)}.info-box.purple strong{color:var(--accent3)}
+.key{background:rgba(245,158,11,.16);color:var(--ink);font-weight:600;padding:.08em .32em;border-radius:5px;border-bottom:2px solid rgba(245,158,11,.55);box-decoration-break:clone;-webkit-box-decoration-break:clone}
+[data-theme="light"] .key{background:#fef3c7;color:#78350f;border-bottom-color:#f59e0b}
+.table-wrap{overflow-x:auto;margin:.85rem 0;border:1px solid var(--line-glass);border-radius:var(--radius-sm)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead th{background:var(--surface-glass);font-weight:700;text-align:left;padding:.6rem .75rem;border-bottom:1px solid var(--accent);color:var(--ink)}
+td{padding:.55rem .75rem;border-bottom:1px solid var(--line-glass);vertical-align:top;line-height:1.55}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--surface-glass-hover)}td:first-child{font-weight:600;white-space:nowrap}
+a.ext{color:var(--link);text-decoration:none;border-bottom:1px dashed var(--link)}
+a.ext:hover{text-decoration:underline}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:.85rem;margin:.85rem 0}
+.tool-card{background:var(--bg-card);border:1px solid var(--line-glass);border-radius:var(--radius-card);padding:1.15rem 1.3rem;transition:all .25s}
+.tool-card:hover{border-color:rgba(99,102,241,.3);box-shadow:0 0 0 3px var(--glow-accent)}
+.tool-card .t-name{font-weight:800;font-size:.98rem;color:var(--accent);margin-bottom:.35rem}
+.tool-card .t-name .badge{display:inline-block;font-size:.68rem;font-weight:600;padding:.1rem .5rem;border-radius:20px;background:var(--surface-glass);color:var(--ink-muted);border:1px solid var(--line-glass);vertical-align:middle;margin-left:.4rem}
+.tool-card p{font-size:.86rem;color:var(--ink-secondary);line-height:1.55;text-align:justify}
+.tool-card .pros{margin-top:.5rem;font-size:.85rem}
+.tool-card .pros li{margin-bottom:.2rem}
+.task-list{counter-reset:task}
+.task-card{background:var(--bg-card);border:1px solid var(--line-glass);border-radius:var(--radius-card);padding:1.25rem 1.5rem;margin-bottom:.85rem;transition:all .25s}
+.task-card:hover{border-color:rgba(99,102,241,.3);box-shadow:0 0 0 3px var(--glow-accent)}
+.task-card::before{counter-increment:task;content:"Задание " counter(task);display:inline-block;font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--accent);margin-bottom:.35rem}
+.task-card .task-title{font-weight:700;font-size:.98rem;margin-bottom:.35rem}
+.task-card .task-body{font-size:.92rem;line-height:1.7;text-align:justify}
+.task-card .task-body p{margin-bottom:.4rem}
+.task-card .task-body ul,.task-card .task-body ol{padding-left:1.75rem;margin-top:.3rem}
+.task-card .task-body li{margin-bottom:.3rem;line-height:1.65}
+.task-card .task-meta{display:flex;gap:.75rem;margin-top:.75rem;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;font-size:.75rem;font-weight:500;padding:.35rem .85rem;border-radius:20px;background:var(--surface-glass);color:var(--ink-muted);border:1px solid var(--line-glass)}
+.badge.level{color:var(--accent);border-color:rgba(99,102,241,.25)}
+.answer-block{border:1px solid var(--line-glass);border-radius:var(--radius-sm);margin-bottom:.75rem;overflow:hidden;background:var(--bg-card)}
+.answer-trigger{width:100%;border:none;background:transparent;padding:.85rem 1.25rem;font:600 .92rem/1.4 'Inter',system-ui;color:var(--ink);text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.answer-trigger:hover{background:var(--surface-glass-hover)}
+.answer-trigger .arrow{font-size:.8rem;color:var(--ink-muted);transition:transform .25s;flex-shrink:0;margin-left:1rem}
+.answer-block.open .answer-trigger .arrow{transform:rotate(180deg)}
+.answer-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.answer-block.open .answer-body{max-height:8000px}
+.answer-body-inner{padding:0 1.25rem 1.15rem;border-top:1px solid var(--line-glass);padding-top:.75rem;font-size:.92rem;line-height:1.7}
+.answer-body-inner p{margin-bottom:.5rem}
+.answer-body-inner ul,.answer-body-inner ol{padding-left:1.75rem;margin-top:.4rem;margin-bottom:.5rem}
+.answer-body-inner li{margin-bottom:.35rem}
+.answer-body-inner .solution{background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.2);border-radius:var(--radius-sm);padding:.6rem .9rem;margin:.5rem 0;font-size:.9rem}
+.answer-body-inner .solution .step{display:block;margin-bottom:.3rem}
+.answer-body-inner .hint{display:block;margin-top:.75rem;padding:.6rem .85rem;background:var(--surface-glass);border-radius:6px;font-size:.85rem;color:var(--ink-muted);text-align:justify}
+.answer-body-inner .hint strong{color:var(--accent)}
+.qlist{counter-reset:q}
+.qlist .q{position:relative;padding-left:2.1rem;margin-bottom:.6rem;text-align:justify;line-height:1.65}
+.qlist .q::before{counter-increment:q;content:counter(q) ".";position:absolute;left:0;font-weight:700;color:var(--accent)}
+.section-nav{display:flex;justify-content:space-between;gap:.5rem;margin:1.25rem 0}
+.section-nav a{font-size:.85rem;font-weight:500;color:var(--accent);text-decoration:none;padding:.3rem .55rem;border-radius:6px}
+.section-nav a:hover{background:var(--surface-glass)}
+.page-footer{text-align:center;color:var(--ink-muted);font-size:.78rem;padding:2rem 1.5rem;border-top:1px solid var(--line-glass);margin-top:2rem}
+@media(max-width:640px){.hero{padding:1.5rem 1rem}.card{padding:1.1rem 1.2rem}}
+@media print{body{background:#fff;font-size:12px;color:#000}.top-bar{display:none}.card,.task-card{break-inside:avoid;background:#fff!important}.answer-body{max-height:none!important}.hero h1{-webkit-text-fill-color:#0b1a2e}.section-nav{display:none}}.card ul,.task-card .task-body ul,.answer-body-inner ul,.accordion-body-inner ul,.tool-card .pros{list-style:none;padding-left:2.15rem}
+.card ul>li,.task-card .task-body ul>li,.answer-body-inner ul>li,.accordion-body-inner ul>li,.tool-card .pros>li{position:relative}
+.card ul>li::before,.task-card .task-body ul>li::before,.answer-body-inner ul>li::before,.accordion-body-inner ul>li::before,.tool-card .pros>li::before{content:"\2014";position:absolute;left:-1.5rem;color:var(--accent);font-weight:700}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <a class="back" href="../index.html"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Назад</a>
+  <button class="theme-toggle" id="themeToggle" aria-label="Тема"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.34 0 .68-.02 1.01-.06C9.56 20.42 7 16.76 7 12s2.56-8.42 6.01-9.94C12.68 2.02 12.34 2 12 2z"/></svg></button>
+</div>
+<header class="hero">
+  <div class="chip">09.02.07 &mdash; Информационные системы и программирование &middot; Лекция 4</div>
+  <h1>Текстовые процессоры</h1>
+  <p class="sub">Создание и форматирование документа. Разметка страницы, шрифты, списки, таблицы, специальные возможности. Веб-инструменты: Яндекс Документы, Google Docs</p>
+  <div class="meta"><span>2 часа</span><span>3 задания</span><span>контрольные вопросы</span></div>
+</header>
+<main>
+
+<nav class="card">
+  <h3>Содержание лекции</h3>
+  <ol style="padding-left:1.5rem;margin-top:.5rem">
+    <li><a href="#s1" style="color:var(--accent);text-decoration:none">Текстовый процессор: понятие и отличие от редактора</a></li>
+    <li><a href="#s2" style="color:var(--accent);text-decoration:none">Программы для работы с текстом: обзор</a></li>
+    <li><a href="#s3" style="color:var(--accent);text-decoration:none">Веб-текстовые процессоры: Яндекс Документы и Google Docs</a></li>
+    <li><a href="#s4" style="color:var(--accent);text-decoration:none">Создание и сохранение документа. Форматы файлов</a></li>
+    <li><a href="#s5" style="color:var(--accent);text-decoration:none">Форматирование документа</a></li>
+    <li><a href="#s6" style="color:var(--accent);text-decoration:none">Разметка страницы</a></li>
+    <li><a href="#s7" style="color:var(--accent);text-decoration:none">Шрифты: типографика на практике</a></li>
+    <li><a href="#s8" style="color:var(--accent);text-decoration:none">Списки</a></li>
+    <li><a href="#s9" style="color:var(--accent);text-decoration:none">Таблицы</a></li>
+    <li><a href="#s10" style="color:var(--accent);text-decoration:none">Специальные возможности</a></li>
+    <li><a href="#s11" style="color:var(--accent);text-decoration:none">Контрольные вопросы</a></li>
+    <li><a href="#s12" style="color:var(--accent);text-decoration:none">Задания для самостоятельной работы</a></li>
+  </ol>
+</nav>
+
+<!-- s1 -->
+<h2 class="section-title first" id="s1">1. Текстовый процессор: понятие и отличие от редактора</h2>
+<div class="def-block"><span class="term">Текстовый редактор</span> Простая программа для ввода и хранения текста без оформления: данные сохраняются «как есть», без шрифтов, стилей и разметки страницы. Примеры — Блокнот (Windows), TextEdit (macOS) в режиме обычного текста.</div>
+<div class="def-block cyan"><span class="term">Текстовый процессор</span> Программа, которая позволяет не только вводить и редактировать текст, но и форматировать его: задавать шрифты, абзацы, списки, таблицы, колонтитулы, вставлять изображения, проверять орфографию и формировать автособираемое оглавление. Примеры — Microsoft Word, LibreOffice Writer, Google Docs, Яндекс Документы.</div>
+<div class="card">
+  <p>Разница между редактором и процессором принципиальна: <span class="key">редактор работает только с символьными строками, а процессор — с логической структурой документа</span>. В текстовом процессоре документ состоит не просто из букв, а из элементов: заголовков, абзацев, списков, таблиц, колонтитулов, сносок. Каждый элемент может иметь собственное оформление, а изменение стиля (например, «Заголовок 1») мгновенно переформатирует все элементы этого типа в документе.</p>
+  <p>Именно эта логическая модель позволяет автоматически создавать оглавление, перенумеровывать страницы и выстраивать структуру длинных документов — отчётных работ, курсовых и дипломных проектов. Для специальности 09.02.07 умение работать с текстовым процессором критично: курсовая и дипломная работа оформляются по ГОСТ 7.32-2017 (требования разобраны в лекции 2), а документация проектов, спецификации и технические задания готовятся в текстовом виде постоянно.</p>
+  <div class="info-box"><strong>Ключевой навык:</strong> специалист должен уметь <span class="key">отделять содержание от оформления</span>. Сначала ввести и структурировать текст (заголовки, разделы), затем настроить оформление (стили, шрифты, поля). Такой подход ускоряет работу и делает документ управляемым.</div>
+</div>
+<div class="section-nav"><a href="#s2">Далее: Программы для работы с текстом &rarr;</a><a href="#">К началу</a></div>
+
+<!-- s2 -->
+<h2 class="section-title" id="s2">2. Программы для работы с текстом: обзор</h2>
+<div class="card">
+  <p>Современные текстовые процессоры делятся на <span class="key">классические настольные</span> и <span class="key">веб-инструменты</span>, работающие в браузере. Настольные программы устанавливаются на компьютер, работают без интернета и, как правило, обладают самым широким набором функций. Веб-инструменты открываются в любой точке, где есть доступ к сети, и позволяют нескольким людям редактировать документ одновременно.</p>
+</div>
+<div class="tool-grid">
+  <div class="tool-card">
+    <div class="t-name">Microsoft Word <span class="badge">настольный</span></div>
+    <p>Флагманский текстовый процессор, де-факто стандарт для документов в организациях России. Наиболее полный набор функций: сложная вёрстка, макросы, слияние писем, защита документов.</p>
+    <ul class="pros"><li>почти любые форматы документов;</li><li>надёжная работа с ГОСТ-оформлением;</li><li>максимум возможностей форматирования.</li></ul>
+  </div>
+  <div class="tool-card">
+    <div class="t-name">LibreOffice Writer <span class="badge">настольный, свободный</span></div>
+    <p>Бесплатный офисный пакет с открытым исходным кодом. Writer полностью поддерживает форматы Word и подходит для учебных заведений, где лицензионность важнее коммерческих продуктов.</p>
+    <ul class="pros"><li>бесплатно и легально;</li><li>открывает .docx без искажений;</li><li>работает без интернета.</li></ul>
+  </div>
+  <div class="tool-card">
+    <div class="t-name">Яндекс Документы <span class="badge">веб</span></div>
+    <p>Российский веб-редактор из экосистемы Яндекс 360, ориентированный на совместную работу. Данные хранятся на серверах Яндекса, доступ через браузер или мобильное приложение.</p>
+    <ul class="pros"><li>совместное редактирование в реальном времени;</li><li>российская инфраструктура хранения;</li><li>тесная интеграция с Яндекс Диском и почтой.</li></ul>
+  </div>
+  <div class="tool-card">
+    <div class="t-name">Google Docs <span class="badge">веб</span></div>
+    <p>Самый распространённый в мире веб-текстовый процессор от Google. Работает в любом браузере, автоматически сохраняет изменения и позволяет делиться доступом с точной настройкой прав.</p>
+    <ul class="pros"><li>бесплатно, достаточно аккаунта Google;</li><li>мощная история версий;</li><li>масса дополнений и интеграций.</li></ul>
+  </div>
+</div>
+<div class="info-box purple"><strong>Рекомендация для обучающегося:</strong> владеть и настольным, и веб-процессором обязательно. На практике в компаниях чаще используют Word, но веб-редакторы становятся стандартом для командной работы над документами.</div>
+<div class="section-nav"><a href="#s3">Далее: Веб-текстовые процессоры &rarr;</a><a href="#s1">&larr; Назад</a></div>
+
+<!-- s3 -->
+<h2 class="section-title" id="s3">3. Веб-текстовые процессоры: Яндекс Документы и Google Docs</h2>
+<div class="card">
+  <p>Веб-текстовые процессоры устроены одинаково: документ хранится на сервере, а в браузере отображается его редактируемая копия. Все изменения автоматически синхронизируются, поэтому даже при закрытии вкладки ничего не теряется. Принципиальное отличие от настольных программ — <span class="key">совместная работа</span>: несколько человек могут править один документ одновременно, видеть курсоры и правки друг друга, оставлять комментарии.</p>
+  <p><span class="key">Google Документы (Google Docs)</span> — веб-процессор американской компании Google. Для начала работы достаточно бесплатного аккаунта Google. Среди преимуществ: автоподсказки и проверка грамматики, история изменений с возможностью отката к любой версии, вставка таблиц, изображений и формул, а также обширная библиотека шаблонов. Документы Google экспортируются в форматы DOCX, PDF, ODT, TXT и HTML.</p>
+  <p><span class="key">Яндекс Документы</span> — отечественный аналог из сервиса Яндекс 360, появившийся в 2022 году. Его преимущества особенно важны для работы в России: данные размещаются на серверах внутри страны, что соответствует требованиям законодательства о персональных данных; нет зависимости от зарубежных сервисов; тесная интеграция с Яндекс Диском, почтой и мессенджером. Яндекс Документы поддерживают форматы DOCX и ODT, совместное редактирование и комментарии, а также импорт готовых документов Word.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Критерий</th><th>Google Docs</th><th>Яндекс Документы</th></tr></thead>
+    <tbody>
+      <tr><td>Доступ</td><td>бесплатный аккаунт Google</td><td>аккаунт Яндекс ID</td></tr>
+      <tr><td>Хранение данных</td><td>серверы Google (за рубежом)</td><td>серверы в РФ</td></tr>
+      <tr><td>Совместное редактирование</td><td>до 100 редакторов</td><td>множество пользователей с правами</td></tr>
+      <tr><td>Совместимость</td><td>DOCX, PDF, TXT, ODT, HTML</td><td>DOCX, ODT, PDF</td></tr>
+      <tr><td>Интеграция</td><td>Google Диск, Gmail, дополнения</td><td>Яндекс Диск, Яндекс Почта</td></tr>
+      <tr><td>История версий</td><td>да, автодетальная</td><td>да</td></tr>
+      <tr><td>Офлайн-режим</td><td>есть (настройки)</td><td>ограниченно</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box cyan"><strong>Практический совет:</strong> для учебных курсовых работ удобен Google Docs (мощная история версий и удобное комментирование), для реального рабочего документооборота в российской компании — Яндекс Документы (соответствие требованиям о хранении данных внутри страны). Примеры: <a class="ext" href="https://docs.google.com" target="_blank" rel="noopener">Google Docs</a>, <a class="ext" href="https://360.yandex.ru/docs/" target="_blank" rel="noopener">Яндекс Документы</a>.</div>
+</div>
+<div class="section-nav"><a href="#s4">Далее: Создание и сохранение документа &rarr;</a><a href="#s2">&larr; Назад</a></div>
+
+<!-- s4 -->
+<h2 class="section-title" id="s4">4. Создание и сохранение документа. Форматы файлов</h2>
+<div class="def-block"><span class="term">Формат документа</span> Правила хранения и разметки файла, которые определяют, какая программа может его открыть и какие возможности форматирования доступны.</div>
+<div class="card">
+  <p>Новый документ в любом процессоре создаётся через меню «Файл → Создать» либо из шаблона. Шаблон — это готовый каркас документа с заранее настроенными стилями, полями и часто — элементами титульного листа. Использование шаблона экономит значительное время при подготовке однотипных документов: отчётов, рефератов, служебных записок.</p>
+  <p>Основной формат текстового процессора Microsoft Word — <span class="key">DOCX</span> (архивный стандарт, основанный на XML). Он понимается всеми современными процессорами, включая LibreOffice, Google Docs и Яндекс Документы. Для печати и обмена документами, которые не должны меняться, используют формат <span class="key">PDF</span> — он сохраняет оформление независимо от устройства. Реже применяются ODT (формат LibreOffice), RTF и обычный TXT.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Формат</th><th>Назначение</th><th>Когда выбрать</th></tr></thead>
+    <tbody>
+      <tr><td>DOCX</td><td>редактируемый документ</td><td>работа над текстом, курсовая, черновик</td></tr>
+      <tr><td>PDF</td><td>финальный неизменяемый файл</td><td>сдача работы, печать, отправка заказчику</td></tr>
+      <tr><td>ODT</td><td>редактируемый документ</td><td>LibreOffice, совместимость</td></tr>
+      <tr><td>TXT</td><td>обычный текст без форматирования</td><td>исходный код, заметки, конфигурации</td></tr>
+      <tr><td>RTF</td><td>базовое форматирование</td><td>обмен между разными программами</td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box"><strong>Совет разработчику:</strong> файлы с исходным кодом хранятся в TXT или форматах текстовых редакторов кода; DOCX/PDF — это формат документов. Понимание разницы между «текстом для машины» и «текстом для человека» помогает не путать инструменты.</div>
+</div>
+<div class="section-nav"><a href="#s5">Далее: Форматирование &rarr;</a><a href="#s3">&larr; Назад</a></div>
+
+<!-- s5 -->
+<h2 class="section-title" id="s5">5. Форматирование документа</h2>
+<div class="def-block"><span class="term">Форматирование</span> Придание тексту внешнего вида в соответствии с правилами оформления: установка шрифтов, размеров, отступов, выравнивания, междустрочных интервалов и стилей.</div>
+<div class="card">
+  <p>Форматирование делят на два уровня: <span class="key">символьное</span> (шрифт, размер, начертание, цвет, регистр) и <span class="key">абзацное</span> (выравнивание, отступы, интервал между строками, оформление первой строки). Управлять ими можно вручную, но грамотный подход — использовать <span class="key">стили</span>.</p>
+  <p>Стиль — это именованный набор параметров форматирования. Например, стиль «Заголовок 1» задаёт размер шрифта, жирность, отступы и цвет одновременно. Если в документе сто заголовков оформлены стилем, достаточно изменить стиль один раз — все заголовки обновятся автоматически. Именно стили позволяют автоматически собрать оглавление и навигацию по документу.</p>
+  <div class="info-box cyan"><strong>Пример:</strong> для курсовой по ГОСТ применяют: основной текст — Times New Roman 14 пт, полуторный интервал, выравнивание по ширине, отступ первой строки 1,25 см; заголовки — те же, но с разной степенью выделения; поля 30/15/20/20 мм. Все эти параметры настраивают один раз в стилях, а не в каждом абзаце вручную.</div>
+  <p>Выравнивание текста бывает четырёх видов: по левому краю (применяется для заголовков), по правому, по центру (подписи, титульные элементы) и по ширине (основной текст). Междустрочный интервал измеряется в значениях 1,0; 1,5; 2,0 и управляет плотностью строк. Абзацный отступ (красная строка) по ГОСТ ГОСТ 7.32-2017 составляет 1,25 см.</p>
+</div>
+<div class="section-nav"><a href="#s6">Далее: Разметка страницы &rarr;</a><a href="#s4">&larr; Назад</a></div>
+
+<!-- s6 -->
+<h2 class="section-title" id="s6">6. Разметка страницы</h2>
+<div class="card">
+  <p>Разметка страницы задаёт геометрию документа: размер бумаги, ориентацию, поля, колонтитулы и нумерацию страниц. Обычный стандарт для текстового документа в России — формат A4 (210 × 297 мм), однострочная ориентация «книжная»; для схем и таблиц применяют альбомную ориентацию.</p>
+  <p><span class="key">Поля страницы</span> — отступы от краёв листа до текста. По ГОСТ 7.32-2017: левое — 30 мм, правое — 15 мм, верхнее и нижнее — по 20 мм. Поля настраиваются в диалоге «Разметка страницы», оттуда же управляются размер бумаги и ориентация.</p>
+  <p><span class="key">Колонтитулы</span> — верхняя и нижняя области страницы, которые повторяются на каждой странице. В верхнем колонтитуле обычно размещают название документа или организации, в нижнем — нумерацию страниц. Номер страницы по ГОСТ ставится внизу по центру арабскими цифрами; титульный лист считается первым, но номер на нём не печатается — это реализуется через отдельный «Первый колонтитул страницы».</p>
+  <p>Важный инструмент разметки — <span class="key">разделы</span>. Раздел позволяет менять параметры страницы внутри одного документа: например, листы курсовой могут быть книжной ориентации, а приложение с большими схемами — альбомной. Разрыв раздела создаёт новую область с независимыми полями и колонтитулами.</p>
+  <div class="info-box"><strong>Специальная возможность:</strong> «Предварительный просмотр» и режимы «Разметка страницы» / «Режим чтения» позволяют видеть документ так, как он будет напечатан, — важно перед сдачей работы.</div>
+</div>
+<div class="section-nav"><a href="#s7">Далее: Шрифты &rarr;</a><a href="#s5">&larr; Назад</a></div>
+
+<!-- s7 -->
+<h2 class="section-title" id="s7">7. Шрифты: типографика на практике</h2>
+<div class="def-block"><span class="term">Шрифт (гарнитура)</span> Набор символов с единым стилем начертания. <span class="term">Кегль</span> — размер шрифта, измеряемый в типографских пунктах (пт). <span class="term">Начертание</span> — вариант шрифта: обычный, полужирный, курсив.</div>
+<div class="card">
+  <p>Шрифты делятся на два больших семейства: <span class="key">с засечками (антиквы)</span> и <span class="key">без засечек (гротески)</span>. Классический представитель антиквы — Times New Roman, стандарт для документов по ГОСТ; к гротескам относятся Arial, Calibri, Segoe UI. Для экранов удобнее гротески, для печатных документов по ГОСТ — Times New Roman.</p>
+  <p>При выборе шрифтов руководствуются <span class="key">правилом контраста и единства</span>: в документе используют одну гарнитуру с разными начертаниями (обычное, полужирное, курсив) либо две контрастные гарнитуры — одну для заголовков, другую для текста. Слишком много разных шрифтов делает документ неаккуратным.</p>
+  <p>Кегль текста задаётся в пунктах. Стандарт для ГОСТ — 14 пт для основного текста; кегль можно уменьшать в таблицах и сносках до 12 пт. Междустрочный интервал чаще выбирают 1,5 для черновых и курсовых работ; пробел между абзацами задаётся отступами, а не пустыми строками.</p>
+  <div class="info-box cyan"><strong>Пример из практики:</strong> в веб-проектах шрифты задаются через CSS; правило выбора гарнитуры и контраста то же. Понимание типографики переносится с текстового процессора на разработку интерфейсов.</div>
+</div>
+<div class="section-nav"><a href="#s8">Далее: Списки &rarr;</a><a href="#s6">&larr; Назад</a></div>
+
+<!-- s8 -->
+<h2 class="section-title" id="s8">8. Списки</h2>
+<div class="card">
+  <p>Списки структурируют перечни и инструкции. Различают три вида: <span class="key">маркированные</span> (для неупорядоченных перечислений, с точкой или другим маркером), <span class="key">нумерованные</span> (когда порядок важен) и <span class="key">многоуровневые</span> — вложенные списки внутри пунктов, например «1; 1.1; 1.2; 2».</p>
+  <p>В текстовом процессоре нумерация многоуровневого списка настраивается через связь с уровнями стилей: внешний уровень соответствует заголовку, внутренние — подпунктам. Это позволяет автоматически поддерживать нумерацию: при вставке нового пункта все последующие перенумеруются сами, не нужно править вручную.</p>
+  <div class="info-box"><strong>Пример:</strong> требования ГОСТ к нумерации разделов — «1, 2, 3», подразделов — «1.1, 1.2»; именно так настраивается многоуровневый список для структуры курсовой. Новый пункт добавляется <span class="key">через Enter</span> внутри списка, вложенный уровень — через Tab, выход из уровня — Shift+Tab.</div>
+</div>
+<div class="section-nav"><a href="#s9">Далее: Таблицы &rarr;</a><a href="#s7">&larr; Назад</a></div>
+
+<!-- s9 -->
+<h2 class="section-title" id="s9">9. Таблицы</h2>
+<div class="card">
+  <p>Таблица — удобный способ представления структурированных данных: характеристик, смет, результатов сравнения. В текстовых документах таблица создаётся через меню «Вставка → Таблица», где задаются число строк и столбцов. После создания таблицей можно управлять: добавлять и удалять строки и столбцы, объединять ячейки, менять ширину и выравнивание.</p>
+  <p>При работе с таблицами в документах по ГОСТ соблюдают правила. Таблица нумеруется сквозной нумерацией, а над ней слева размещается подпись «Таблица 1 — Название» без точки в конце. Таблицу лучше переносить на новую страницу целиком или с повторением строки заголовков — для этого используется свойство «Повторять заголовок на каждой странице».</p>
+  <p>Оформление таблицы включает: выбор границ (обычные тонкие линии), задание ширины столбцов, выравнивание содержимого ячеек (текст — слева, числа — по правому или центральному краю) и отступы внутри ячеек. Стиль таблицы можно задать один раз и применить ко всем таблицам документа — так же, как стили абзацев.</p>
+  <div class="info-box cyan"><strong>Пример:</strong> в курсовой работе технико-экономическое обоснование часто оформляется таблицей «Смета сборки» из лекции 2: столбцы «Компонент — Модель — Цена»; итоговая строка выделяется полужирным. Числа выравниваются по правому краю для удобочитаемости.</div>
+</div>
+<div class="section-nav"><a href="#s10">Далее: Специальные возможности &rarr;</a><a href="#s8">&larr; Назад</a></div>
+
+<!-- s10 -->
+<h2 class="section-title" id="s10">10. Специальные возможности</h2>
+<div class="card">
+  <p>Современные текстовые процессоры содержат набор автоматизированных функций, которые существенно облегчают подготовку документов. Важнейшие из них:</p>
+  <ul>
+    <li><span class="key">Проверка орфографии и грамматики</span> — автоматическое подчёркивание ошибок и предложение исправлений (в русском режиме работает и в Word, и в веб-редакторах);</li>
+    <li><span class="key">Автозамена</span> — замена вводимых сокращений на полные слова или исправление типовых опечаток;</li>
+    <li><span class="key">Автособираемое оглавление</span> — вставляемое из «Ссылок» на основе стилей заголовков; обновляется автоматически;</li>
+    <li><span class="key">Сноски и концевые сноски</span> — для пояснений и ссылок на источники;</li>
+    <li><span class="key">Поиск и замена</span> — массовая замена терминов и форматирования по всему документу;</li>
+    <li><span class="key">Комментарии и рецензирование</span> — примечания к фрагментам, отслеживание правок при совместной работе;</li>
+    <li><span class="key">Проверка доступности</span> — режимы отображения и встроенная проверка удобочитаемости для людей с ограниченными возможностями (подписи к изображениям, контрастность, структура загаловков).</li>
+  </ul>
+  <p>В веб-процессорах (Google Docs, Яндекс Документы) к числу специальных возможностей добавляются <span class="key">история версий</span> — полный журнал изменений с откатом к любой предыдущей редакции, и <span class="key">голосовой ввод текста</span>. Совместная работа поддерживается через комментарии и чат.</p>
+  <div class="info-box purple"><strong>Инструмент автоматизации:</strong> в Word и LibreOffice доступны макросы — записанные последовательности действий, выполняемые командой. Для специалиста по ИС это мост к офисной автоматизации: простые задачи (очистка форматирования, формирование отчётных таблиц) можно делегировать макросам.</div>
+</div>
+<div class="section-nav"><a href="#s11">Далее: Контрольные вопросы &rarr;</a><a href="#s9">&larr; Назад</a></div>
+
+<!-- s11 -->
+<h2 class="section-title" id="s11">11. Контрольные вопросы</h2>
+<div class="card">
+  <p style="margin-bottom:.6rem">Ответьте устно на следующие вопросы:</p>
+  <div class="qlist">
+    <div class="q">Чем текстовый процессор отличается от текстового редактора? Приведите примеры.</div>
+    <div class="q">Назовите не менее двух веб-текстовых процессоров и их главные преимущества.</div>
+    <div class="q">Чем формат DOCX отличается от PDF? В каком случае выбирают каждый из них?</div>
+    <div class="q">Что такое стиль документа и почему его использование предпочтительнее ручного форматирования?</div>
+    <div class="q">Перечислите параметры разметки страницы и приведите нормативы полей по ГОСТ 7.32-2017.</div>
+    <div class="q">Какие два семейства шрифтов существуют и какой стандарт используется для документов по ГОСТ?</div>
+    <div class="q">Как настроить автоматическую нумерацию подразделов «1.1, 1.2»?</div>
+    <div class="q">Какие специальные возможности текстового процессора вы знаете? Опишите две из них.</div>
+  </div>
+</div>
+
+<!-- s12 -->
+<h2 class="section-title" id="s12">12. Задания для самостоятельной работы</h2>
+<div class="card">
+  <p>Задания выполняются в любом доступном текстовом процессоре (рекомендуется Яндекс Документы или Google Docs). Результат — готовый документ и (для задания 1) PDF-копия, которые сдаются преподавателю на проверку.</p>
+</div>
+<div class="task-list">
+
+  <div class="task-card">
+    <div class="task-title">Создание отформатированного документа по ГОСТ</div>
+    <div class="task-body">
+      <p>Подготовьте документ «Техническое задание на разработку информационной системы» объёмом не менее 2 страниц.</p>
+      <p>Требования к оформлению:</p>
+      <ol>
+        <li>поля: левое 30 мм, правое 15 мм, верхнее/нижнее 20 мм;</li>
+        <li>основной текст — Times New Roman 14 пт, полуторный интервал, выравнивание по ширине, отступ первой строки 1,25 см;</li>
+        <li>заголовки разделов оформите стилями, а не вручную;</li>
+        <li>вставьте нумерованный список требований (не менее 5 пунктов) и таблицу «Сроки и этапы работ» (не менее 4 строк);</li>
+        <li>в нижний колонтитул добавьте нумерацию страниц (титульный лист — без номера);</li>
+        <li>проверьте орфографию и сохраните копию в PDF.</li>
+      </ol>
+    </div>
+    <div class="task-meta"><span class="badge level">базовый</span><span class="badge">ДОК-файл + PDF</span></div>
+  </div>
+
+  <div class="task-card">
+    <div class="task-title">Сравнение веб-текстовых процессоров</div>
+    <div class="task-body">
+      <p>Откройте Яndex Документы и Google Docs (или два аналогичных сервиса) и выполните в каждом следующие действия: создайте документ, вставьте заголовок, нумерованный список из трёх пунктов и простую таблицу; поделитесь документом с одногруппником и сделайте комментарий.</p>
+      <p>После выполнения составьте сравнительную таблицу по критериям: удобство интерфейса, скорость работы, совместное редактирование, история версий, экспорт в PDF, офлайн-режим. Завершите выводом (5–7 предложений): какой сервис и для каких задач вы выбрали бы.</p>
+    </div>
+    <div class="task-meta"><span class="badge level">средний</span><span class="badge">сравнение + вывод</span></div>
+  </div>
+
+  <div class="task-card">
+    <div class="task-title">Автособираемое оглавление и стили</div>
+    <div class="task-body">
+      <p>Создайте документ-отчёт объёмом 4–5 страниц на произвольную техническую тему (например, «Сравнение СУБД PostgreSQL и MySQL», «Обзор IDE для Python»). Структурируйте текст: не менее 3 разделов, каждый — с подразделами.</p>
+      <p>Оформите всё через стили «Заголовок 1» и «Заголовок 2». Вставьте автособираемое оглавление в начало документа. Затем измените один стиль (например, цвет или размер заголовков) и убедитесь, что весь документ обновился, а оглавление собралось заново. Приложите короткое описание (10–15 строк): какие преимущества дало использование стилей.</p>
+    </div>
+    <div class="task-meta"><span class="badge level">повышенный</span><span class="badge">отчёт + описание</span></div>
+  </div>
+
+</div>
+
+</main>
+<footer class="page-footer">09.02.07 Информационные системы и программирование · Лекция 4 &copy; 2026</footer>
+<script>
+(function(){var b=document.getElementById('themeToggle'),d=document.documentElement;function e(v){d.setAttribute('data-theme',v);localStorage.setItem('portal-theme-v2',v);b.innerHTML=v==='dark'?'<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.59 2.06-2.48 3.56-4.74 3.56-2.76 0-5-2.24-5-5 0-2.26 1.5-4.15 3.56-4.74C12.92 3.04 12.46 3 12 3z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.34 0 .68-.02 1.01-.06C9.56 20.42 7 16.76 7 12s2.56-8.42 6.01-9.94C12.68 2.02 12.34 2 12 2z"/></svg>'};b.addEventListener('click',function(){var cur=d.getAttribute('data-theme');e(cur==='dark'?'light':'dark')});var saved=localStorage.getItem('portal-theme-v2');e(saved?saved:'dark');document.querySelectorAll('.answer-trigger').forEach(function(t){t.addEventListener('click',function(){var a=t.closest('.answer-block');if(a)a.classList.toggle('open')})});document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(ev){ev.preventDefault();var tg=document.querySelector(a.getAttribute('href'));if(tg)tg.scrollIntoView({behavior:'smooth',block:'start'})})});})();
+</script>
+</body>
+</html>

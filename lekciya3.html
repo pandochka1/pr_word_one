@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Тема 1.2 — Подходы к измерению информации (09.02.07)</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#6366f1;--accent2:#06b6d4;--accent3:#a855f7;--surface-glass:rgba(255,255,255,.06);--surface-glass-border:rgba(255,255,255,.08);--surface-glass-hover:rgba(255,255,255,.10);--ink:#f1f5f9;--ink-secondary:#94a3b8;--ink-muted:#64748b;--bg:#0a0a12;--bg-card:rgba(255,255,255,.04);--bg-card-hover:rgba(255,255,255,.08);--line-glass:rgba(255,255,255,.06);--glow-accent:rgba(99,102,241,.25);--glow-cyan:rgba(6,182,212,.15);--glow-purple:rgba(168,85,247,.2);--shadow-card:0 8px 32px rgba(0,0,0,.4);--radius-card:20px;--radius-sm:12px;--toggle-bg:rgba(255,255,255,.1);--hero-grad1:#f1f5f9;--hero-grad2:#6366f1;--hero-grad3:#06b6d4;--link:#818cf8;--calc:#f59e0b;--calc-soft:rgba(245,158,11,.12)}
+[data-theme="light"]{--bg:#eef1f6;--ink:#111827;--ink-secondary:#4b5b73;--ink-muted:#8494a8;--surface-glass:rgba(255,255,255,.75);--surface-glass-border:rgba(15,23,42,.10);--surface-glass-hover:rgba(255,255,255,.95);--bg-card:rgba(255,255,255,.65);--bg-card-hover:rgba(255,255,255,.9);--line-glass:rgba(15,23,42,.10);--glow-accent:rgba(99,102,241,.15);--glow-cyan:rgba(6,182,212,.10);--glow-purple:rgba(168,85,247,.12);--shadow-card:0 8px 32px rgba(0,0,0,.08);--toggle-bg:rgba(15,23,42,.08);--hero-grad1:#111827;--hero-grad2:#6366f1;--hero-grad3:#06b6d4;--link:#4f46e5}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 800px 500px at 10% 20%,var(--glow-accent) 0%,transparent 70%),radial-gradient(ellipse 600px 400px at 85% 60%,var(--glow-cyan) 0%,transparent 70%),radial-gradient(ellipse 500px 400px at 50% 90%,var(--glow-purple) 0%,transparent 70%);pointer-events:none;z-index:0}
+.top-bar{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1.5rem;max-width:960px;margin:0 auto;position:relative;z-index:10}
+.top-bar .back{display:inline-flex;align-items:center;gap:.35rem;font-size:.82rem;font-weight:600;color:var(--ink-muted);text-decoration:none}
+.top-bar .back:hover{color:var(--accent)}.top-bar .back svg{width:14px;height:14px;fill:currentColor}
+.theme-toggle{background:var(--toggle-bg);border:none;border-radius:50%;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s,transform .2s;backdrop-filter:blur(12px)}
+.theme-toggle:hover{transform:scale(1.1)}.theme-toggle svg{width:19px;height:19px;fill:var(--ink-secondary)}
+main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 1.5rem 4rem}
+.hero{text-align:center;padding:2.5rem 1.5rem 2rem}
+.hero .chip{display:inline-flex;align-items:center;gap:.35rem;font-size:.78rem;font-weight:600;padding:.3rem .9rem;border-radius:100px;background:var(--surface-glass);border:1px solid var(--surface-glass-border);backdrop-filter:blur(16px);color:var(--ink-muted);margin-bottom:1.25rem}
+.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;letter-spacing:-0.03em;line-height:1.12;background:linear-gradient(135deg,var(--hero-grad1) 0%,var(--hero-grad2) 50%,var(--hero-grad3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .sub{font-size:.95rem;color:var(--ink-secondary);margin-top:.5rem}.hero .meta{font-size:.78rem;color:var(--ink-muted);margin-top:.6rem;display:flex;justify-content:center;gap:1.25rem;flex-wrap:wrap}
+.card{background:var(--bg-card);border:1px solid var(--line-glass);border-radius:var(--radius-card);padding:1.5rem 1.75rem;margin-bottom:1.25rem;box-shadow:var(--shadow-card)}
+.card p,.card li,.def-block p,.answer-body-inner p,.solution p{text-align:justify}
+.card p{line-height:1.8}.card p+p{margin-top:.65rem}
+.card ul,.card ol{padding-left:1.75rem;margin-top:.4rem}.card li{margin-bottom:.3rem;line-height:1.7;padding-left:.15rem}
+.section-title{font-size:1.25rem;font-weight:800;margin:2rem 0 .6rem;letter-spacing:-0.01em;color:var(--accent)}.section-title.first{margin-top:0}
+.card h3{font-size:1rem;font-weight:700;margin-bottom:.35rem;color:var(--ink)}
+.def-block{border-left:3px solid var(--accent);background:var(--surface-glass);backdrop-filter:blur(12px);padding:.85rem 1.25rem;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:.85rem 0;line-height:1.65;font-size:.92rem}
+.def-block .term{font-weight:700;color:var(--accent);display:block;margin-bottom:.2rem}
+.info-box{border-left:3px solid var(--accent);background:var(--surface-glass);backdrop-filter:blur(12px);padding:.8rem 1.2rem;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:1rem 0;font-size:.9rem;line-height:1.65;text-align:justify}
+.info-box strong{color:var(--accent)}.info-box.cyan{border-left-color:var(--accent2)}.info-box.cyan strong{color:var(--accent2)}.info-box.purple{border-left-color:var(--accent3)}.info-box.purple strong{color:var(--accent3)}
+.key{background:rgba(245,158,11,.16);color:var(--ink);font-weight:600;padding:.08em .32em;border-radius:5px;border-bottom:2px solid rgba(245,158,11,.55);box-decoration-break:clone;-webkit-box-decoration-break:clone}
+[data-theme="light"] .key{background:#fef3c7;color:#78350f;border-bottom-color:#f59e0b}
+.formula{background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);border-radius:var(--radius-sm);padding:.6rem 1rem;margin:.6rem 0;font-weight:700;font-size:1.05rem;color:var(--ink);text-align:center;letter-spacing:.01em}
+[data-theme="light"] .formula{background:rgba(99,102,241,.08);border-color:rgba(99,102,241,.3)}
+.formula .lbl{display:block;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-muted);margin-bottom:.15rem}
+.table-wrap{overflow-x:auto;margin:.85rem 0;border:1px solid var(--line-glass);border-radius:var(--radius-sm)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead th{background:var(--surface-glass);font-weight:700;text-align:left;padding:.6rem .75rem;border-bottom:1px solid var(--accent);color:var(--ink)}
+td{padding:.55rem .75rem;border-bottom:1px solid var(--line-glass);vertical-align:top;line-height:1.55}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--surface-glass-hover)}td:first-child{font-weight:600;white-space:nowrap}
+a.ext{color:var(--link);text-decoration:none;border-bottom:1px dashed var(--link)}
+a.ext:hover{text-decoration:underline}
+.task-list{counter-reset:task}
+.task-card{background:var(--bg-card);border:1px solid var(--line-glass);border-radius:var(--radius-card);padding:1.25rem 1.5rem;margin-bottom:.85rem;transition:all .25s}
+.task-card:hover{border-color:rgba(99,102,241,.3);box-shadow:0 0 0 3px var(--glow-accent)}
+.task-card::before{counter-increment:task;content:"Задание " counter(task);display:inline-block;font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--accent);margin-bottom:.35rem}
+.task-card .task-title{font-weight:700;font-size:.98rem;margin-bottom:.35rem}
+.task-card .task-body{font-size:.92rem;line-height:1.7;text-align:justify}
+.task-card .task-body p{margin-bottom:.4rem}
+.task-card .task-body ul,.task-card .task-body ol{padding-left:1.75rem;margin-top:.3rem}
+.task-card .task-body li{margin-bottom:.3rem;line-height:1.65}
+.task-card .task-meta{display:flex;gap:.75rem;margin-top:.75rem;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;font-size:.75rem;font-weight:500;padding:.35rem .85rem;border-radius:20px;background:var(--surface-glass);color:var(--ink-muted);border:1px solid var(--line-glass)}
+.badge.level{color:var(--accent);border-color:rgba(99,102,241,.25)}
+.answer-block{border:1px solid var(--line-glass);border-radius:var(--radius-sm);margin-bottom:.75rem;overflow:hidden;background:var(--bg-card)}
+.answer-trigger{width:100%;border:none;background:transparent;padding:.85rem 1.25rem;font:600 .92rem/1.4 'Inter',system-ui;color:var(--ink);text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.answer-trigger:hover{background:var(--surface-glass-hover)}
+.answer-trigger .arrow{font-size:.8rem;color:var(--ink-muted);transition:transform .25s;flex-shrink:0;margin-left:1rem}
+.answer-block.open .answer-trigger .arrow{transform:rotate(180deg)}
+.answer-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.answer-block.open .answer-body{max-height:8000px}
+.answer-body-inner{padding:0 1.25rem 1.15rem;border-top:1px solid var(--line-glass);padding-top:.75rem;font-size:.92rem;line-height:1.7}
+.answer-body-inner p{margin-bottom:.5rem}
+.answer-body-inner ul,.answer-body-inner ol{padding-left:1.75rem;margin-top:.4rem;margin-bottom:.5rem}
+.answer-body-inner li{margin-bottom:.35rem}
+.answer-body-inner .solution{background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.2);border-radius:var(--radius-sm);padding:.6rem .9rem;margin:.5rem 0;font-size:.9rem}
+.answer-body-inner .solution .step{display:block;margin-bottom:.3rem}
+.answer-body-inner .hint{display:block;margin-top:.75rem;padding:.6rem .85rem;background:var(--surface-glass);border-radius:6px;font-size:.85rem;color:var(--ink-muted);text-align:justify}
+.answer-body-inner .hint strong{color:var(--accent)}
+.qlist{counter-reset:q}
+.qlist .q{position:relative;padding-left:2.1rem;margin-bottom:.6rem;text-align:justify;line-height:1.65}
+.qlist .q::before{counter-increment:q;content:counter(q) ".";position:absolute;left:0;font-weight:700;color:var(--accent)}
+.type-block{margin-bottom:1rem}
+.type-block .type-title{background:var(--surface-glass);border:1px solid var(--line-glass);border-radius:var(--radius-sm);padding:.7rem 1.1rem;font-weight:700;color:var(--accent);margin-bottom:.6rem}
+.type-block .type-title .n{display:inline-block;font-size:.75rem;font-weight:700;background:var(--accent);color:#fff;border-radius:20px;padding:.1rem .6rem;margin-right:.6rem}
+.section-nav{display:flex;justify-content:space-between;gap:.5rem;margin:1.25rem 0}
+.section-nav a{font-size:.85rem;font-weight:500;color:var(--accent);text-decoration:none;padding:.3rem .55rem;border-radius:6px}
+.section-nav a:hover{background:var(--surface-glass)}
+.page-footer{text-align:center;color:var(--ink-muted);font-size:.78rem;padding:2rem 1.5rem;border-top:1px solid var(--line-glass);margin-top:2rem}
+@media(max-width:640px){.hero{padding:1.5rem 1rem}.card{padding:1.1rem 1.2rem}}
+@media print{body{background:#fff;font-size:12px;color:#000}.top-bar{display:none}.card,.task-card{break-inside:avoid;background:#fff!important}.answer-body{max-height:none!important}.hero h1{-webkit-text-fill-color:#0b1a2e}.section-nav{display:none}}.card ul,.task-card .task-body ul,.answer-body-inner ul,.accordion-body-inner ul,.tool-card .pros{list-style:none;padding-left:2.15rem}
+.card ul>li,.task-card .task-body ul>li,.answer-body-inner ul>li,.accordion-body-inner ul>li,.tool-card .pros>li{position:relative}
+.card ul>li::before,.task-card .task-body ul>li::before,.answer-body-inner ul>li::before,.accordion-body-inner ul>li::before,.tool-card .pros>li::before{content:"\2014";position:absolute;left:-1.5rem;color:var(--accent);font-weight:700}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <a class="back" href="../index.html"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Назад</a>
+  <button class="theme-toggle" id="themeToggle" aria-label="Тема"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.34 0 .68-.02 1.01-.06C9.56 20.42 7 16.76 7 12s2.56-8.42 6.01-9.94C12.68 2.02 12.34 2 12 2z"/></svg></button>
+</div>
+<header class="hero">
+  <div class="chip">09.02.07 &mdash; Информационные системы и программирование &middot; Тема 1.2</div>
+  <h1>Подходы к измерению информации</h1>
+  <p class="sub">Содержательный, алфавитный и вероятностный подходы. Единицы измерения. Передача и хранение. Архивация. Разбор типовых задач ЕГЭ и ОГЭ</p>
+  <div class="meta"><span>4 часа</span><span>типовые задачи ЕГЭ/ОГЭ</span><span>задачи для сам. работы</span></div>
+</header>
+<main>
+
+<nav class="card">
+  <h3>Содержание темы</h3>
+  <ol style="padding-left:1.5rem;margin-top:.5rem">
+    <li><a href="#s1" style="color:var(--accent);text-decoration:none">Зачем измерять информацию: ключевые понятия</a></li>
+    <li><a href="#s2" style="color:var(--accent);text-decoration:none">Единицы измерения информации</a></li>
+    <li><a href="#s3" style="color:var(--accent);text-decoration:none">Алфавитный подход</a></li>
+    <li><a href="#s4" style="color:var(--accent);text-decoration:none">Содержательный подход</a></li>
+    <li><a href="#s5" style="color:var(--accent);text-decoration:none">Вероятностный подход (формула Шеннона)</a></li>
+    <li><a href="#s6" style="color:var(--accent);text-decoration:none">Дискретное представление информации</a></li>
+    <li><a href="#s7" style="color:var(--accent);text-decoration:none">Передача и хранение информации. Объёмы носителей</a></li>
+    <li><a href="#s8" style="color:var(--accent);text-decoration:none">Архив информации: сжатие данных</a></li>
+    <li><a href="#s9" style="color:var(--accent);text-decoration:none">Типовые задачи ЕГЭ и ОГЭ: разбор по типам</a></li>
+    <li><a href="#s10" style="color:var(--accent);text-decoration:none">Контрольные вопросы</a></li>
+    <li><a href="#s11" style="color:var(--accent);text-decoration:none">Задачи для самостоятельной работы</a></li>
+  </ol>
+</nav>
+
+<!-- s1 -->
+<h2 class="section-title first" id="s1">1. Зачем измерять информацию: ключевые понятия</h2>
+<div class="def-block"><span class="term">Информация (в курсе ОК 02, информационные технологии)</span> Сведения, которые уменьшают неопределённость знаний об объекте или явлении и могут быть сохранены, переданы и обработаны. Количество информации — мера того, насколько сообщение уменьшает эту неопределённость.</div>
+<div class="card">
+  <p>В повседневной жизни мы не задумываемся, сколько «весит» новость или фотография: для нас важнее смысл. Но компьютер работает иначе — он оперирует только двоичным кодом, и для него любая информация, будь то текст, звук, изображение или видео, — это последовательность нулей и единиц. Поэтому специалисту по информационным системам необходимо уметь <span class="key">количественно оценивать информацию</span>: сколько места займёт файл, сколько бит нужно, чтобы закодировать символ, какой объём данных передастся по сети за заданное время.</p>
+  <p>Измерение информации решает три практические задачи. Первая — <span class="key">хранение</span>: понять объём носителя, необходимого для размещения данных. Вторая — <span class="key">передача</span>: рассчитать, сколько времени займёт передача файла по каналу связи или сколько данных можно передать за фиксированный промежуток времени. Третья — <span class="key">оценка эффективности кодирования и сжатия</span>: понять, насколько компактно представлена информация и какие данные можно ужать без потери смысла.</p>
+  <p>В науке и школьном курсе информатики закрепились <span class="key">три подхода к измерению информации</span>: содержательный, алфавитный и вероятностный. Каждый отвечает на свой вопрос. Содержательный подход оценивает, сколько информации несёт сообщение с точки зрения его смысла для получателя. Алфавитный подход измеряет объём данных формально, по количеству символов, независимо от содержания. Вероятностный подход обобщает содержательный на случай, когда события имеют разную вероятность.</p>
+</div>
+<div class="info-box"><strong>Почему это важно для специальности 09.02.07?</strong> Все разделы темы напрямую ложатся на практику разработчика: расчёт объёма базы данных, выбор тарифного плана и канала связи, оптимизация хранения файлов, архивация логов и резервных копий, кодирование текста в базах и веб-приложениях.</div>
+<div class="section-nav"><a href="#s2">Далее: Единицы измерения &rarr;</a><a href="#">К началу</a></div>
+
+<!-- s2 -->
+<h2 class="section-title" id="s2">2. Единицы измерения информации</h2>
+<div class="card">
+  <p>Минимальная единица информации — <span class="key">бит</span> (bit, от binary digit — двоичная цифра). Бит принимает одно из двух значений: 0 или 1. Именно столько нужно, чтобы закодировать одно из двух равновероятных состояний — например, «да» или «нет», «вкл» или «выкл», исход подбрасывания монеты.</p>
+  <p>Восемь бит образуют <span class="key">байт</span>. Достаточно одного байта, чтобы закодировать 256 различных значений, что соответствует коду одного символа в традиционных 8-битных кодировках. Крупные единицы образуются возведением в степень с основанием 2:</p>
+  <div class="formula"><span class="lbl">Соотношение единиц</span>1 Кбайт = 2<sup>10</sup> = 1024 байта &nbsp;&middot;&nbsp; 1 Мбайт = 2<sup>20</sup> байт &nbsp;&middot;&nbsp; 1 Гбайт = 2<sup>30</sup> байт &nbsp;&middot;&nbsp; 1 Тбайт = 2<sup>40</sup> байт</div>
+  <p>В школьных задачах обычно используются двоичные кратные: <span class="key">1 Кбайт = 1024 байта</span>, а не 1000. Именно поэтому в вычислениях удобно представлять объёмы как степени двойки: 512 байт — это 2<sup>9</sup>, 4 Кбайта — 2<sup>12</sup> байт, 1 Мбайт — 2<sup>20</sup>. Умение свободно переводить большие числа в степени двойки значительно ускоряет решение задач.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Единица</th><th>Сокращение</th><th>Точное значение</th><th>Степень двойки (в байтах)</th></tr></thead>
+    <tbody>
+      <tr><td>бит</td><td>б</td><td>0 или 1</td><td>&mdash;</td></tr>
+      <tr><td>байт</td><td>Б</td><td>8 бит</td><td>2<sup>0</sup></td></tr>
+      <tr><td>килобайт</td><td>Кбайт</td><td>1024 байта</td><td>2<sup>10</sup></td></tr>
+      <tr><td>мегабайт</td><td>Мбайт</td><td>1024 Кбайта</td><td>2<sup>20</sup></td></tr>
+      <tr><td>гигабайт</td><td>Гбайт</td><td>1024 Мбайта</td><td>2<sup>30</sup></td></tr>
+      <tr><td>терабайт</td><td>Тбайт</td><td>1024 Гбайта</td><td>2<sup>40</sup></td></tr>
+    </tbody>
+  </table></div>
+  <div class="info-box"><strong>Важно для задач:</strong> большинство объёмов в ЕГЭ/ОГЭ даны так, чтобы решаться через степени двойки без калькулятора: 4 Мбайт = 2<sup>22</sup> бит, 256 Кбайт = 2<sup>21</sup> бит. Переводите всё к битам в начале решения.</div>
+</div>
+<div class="section-nav"><a href="#s3">Далее: Алфавитный подход &rarr;</a><a href="#s1">&larr; Назад</a></div>
+
+<!-- s3 -->
+<h2 class="section-title" id="s3">3. Алфавитный подход</h2>
+<div class="def-block"><span class="term">Алфавитный подход</span> Способ измерения объёма информации, при котором учитывается только количество символов в сообщении и мощность алфавита, но не смысл. Объём текста равен произведению числа символов на информационный вес одного символа.</div>
+<div class="def-block"><span class="term">Алфавит и мощность алфавита</span> <span class="key">Алфавит</span> — множество допустимых символов языка. <span class="key">Мощность алфавита N</span> — количество символов в этом множестве. Пример: в русском алфавите без учёта регистра и пробелов 34 символа, в двоичном алфавите мощность равна 2.</div>
+<div class="card">
+  <p>Ключевая идея алфавитного подхода состоит в том, что каждый символ несёт фиксированное количество информации, зависящее только от мощности алфавита. Чем больше алфавит, тем больше информации содержит один символ, поскольку выбор происходит из большего числа вариантов.</p>
+  <p>Информационный вес символа i связан с мощностью алфавита N соотношением Хартли: <span class="key">количество вариантов равно двум в степени информационного веса</span>. Иными словами, чтобы закодировать один из N символов равновероятным двоичным кодом, требуется i бит.</p>
+  <div class="formula"><span class="lbl">Формула 1 — связь мощности алфавита и веса символа</span>N = 2<sup>i</sup></div>
+  <div class="formula"><span class="lbl">Формула 2 — информационный объём сообщения</span>I = K &times; i</div>
+  <p>Здесь N — мощность алфавита, i — информационный вес одного символа в битах, K — количество символов в сообщении, I — общий информационный объём сообщения. Эта пара формул решает подавляющее большинство задач алфавитного типа.</p>
+  <p>На практике важно различать три ситуации. В первой известна мощность алфавита — тогда вес символа находят как i = log<sub>2</sub>N, обычно через ближайшую степень двойки. Во второй мощность алфавита неизвестна, но дан объём и число символов — тогда i = I / K. В третьей требуется не целое количество бит, а минимальное «впритык»: тогда к найденному значению округляют вверх и учитывают, что кодирование всего алфавита должно быть однозначным.</p>
+  <div class="info-box"><strong>Пример:</strong> текст длиной 200 символов записан в алфавите из 256 символов. Вес одного символа: 256 = 2<sup>8</sup> → i = 8 бит. Объём текста: I = 200 &times; 8 = 1600 бит = 200 байт.</div>
+</div>
+<div class="section-nav"><a href="#s4">Далее: Содержательный подход &rarr;</a><a href="#s2">&larr; Назад</a></div>
+
+<!-- s4 -->
+<h2 class="section-title" id="s4">4. Содержательный подход</h2>
+<div class="def-block"><span class="term">Содержательный подход</span> Измерение количества информации через уменьшение неопределённости знаний. Сообщение несёт тем больше информации, чем большее число исходов оно позволяет различить.</div>
+<div class="card">
+  <p>Содержательный подход отвечает на вопрос «сколько нового мы узнали?». Представьте, что мы угадываем задуманное число из шестнадцати. До угадывания неопределённость максимальна: подходят все шестнадцать вариантов. После сообщения «задумано число 7» неопределённость исчезает полностью. Количество информации, полученной при этом, равно логарифму числа равновероятных вариантов по основанию два.</p>
+  <div class="formula"><span class="lbl">Формула 3 — содержательный подход, равновероятные события</span>i = log<sub>2</sub>N &nbsp;&hArr;&nbsp; N = 2<sup>i</sup></div>
+  <p>Здесь N — число равновероятных возможных исходов, i — количество информации в битах, получаемое, когда становится известным один конкретный исход. Практическое следствие, которое нужно запомнить: <span class="key">один бит информации соответствует выбору одного из двух равновероятных вариантов</span>; два бита — одного из четырёх; три бита — одного из восьми и так далее. Эта закономерность мгновенно даёт ответы в простейших задачах: если вариантов 16, сообщение о конкретном несёт 4 бита, если 32 — 5 бит.</p>
+  <div class="info-box"><strong>Пример:</strong> экзаменационный билет выбирается из 32 вариантов. Сообщение «выпал билет № 5» несёт i = log<sub>2</sub>32 = 5 бит, потому что 32 = 2<sup>5</sup>. Аналогично: выпавшая грань игрального кубика (6 исходов) даёт не целое число бит, поэтому в задачах обычно используют степени двойки.</div>
+  <p>Недостаток содержательного подхода в исходном виде очевиден: он предполагает, что все исходы равновероятны. В реальности события почти всегда имеют разные вероятности, поэтому содержательный подход обобщают до вероятностного, который рассматривается в следующем разделе.</p>
+</div>
+<div class="section-nav"><a href="#s5">Далее: Вероятностный подход &rarr;</a><a href="#s3">&larr; Назад</a></div>
+
+<!-- s5 -->
+<h2 class="section-title" id="s5">5. Вероятностный подход (формула Шеннона)</h2>
+<div class="def-block"><span class="term">Вероятностный подход (Клод Шеннон, 1948)</span> Обобщение содержательного подхода на случай, когда события имеют разные вероятности. Количество информации о наступлении события тем больше, чем менее оно вероятно.</div>
+<div class="card">
+  <p>Если события неравновероятны, измерение по формуле Хартли становится некорректным. Редкое событие несёт больше информации, чем частое, — ведь узнать, что произошло именно редкое событие, было труднее. Например, сообщение «завтра будет обычный рабочий день» почти не несёт информации, а «завтра объявлено нерабочим днём» — несёт заметную.</p>
+  <p>Шеннон предложил вычислять <span class="key">среднюю информативность одного сообщения</span> по всем возможным исходам как математическое ожидание количества информации, где каждое слагаемое учитывает вероятность события:</p>
+  <div class="formula"><span class="lbl">Формула 4 — среднее количество информации (формула Шеннона)</span>I = &minus; &Sigma; p<sub>k</sub> &times; log<sub>2</sub>p<sub>k</sub></div>
+  <p>Суммирование ведётся по всем событиям; p<sub>k</sub> — вероятность k-го события, при этом сумма всех вероятностей равна единице. Знак «минус» необходим, потому что логарифм вероятности, меньшей единицы, отрицателен, а количество информации обязано быть положительным.</p>
+  <p><span class="key">Важный частный случай:</span> если все события равновероятны, то p<sub>k</sub> = 1/N для каждого из N исходов, и формула Шеннона превращается в уже знакомую формулу Хартли: I = log<sub>2</sub>N. Таким образом, содержательный подход — это частный случай вероятностного при равновероятных исходах.</p>
+  <div class="info-box"><strong>Пример с двумя неравновероятными событиями:</strong> в мешке 3 белых и 1 чёрный шар. Вероятность белого шара 3/4, чёрного 1/4. Количество информации, которое несёт сообщение о появлении белого шара: i = &minus;log<sub>2</sub>(3/4) &asymp; 0,415 бит. О чёрном: i = &minus;log<sub>2</sub>(1/4) = 2 бита. Среднее количество информации по Шеннону: &minus;(3/4)&middot;log<sub>2</sub>(3/4) &minus; (1/4)&middot;log<sub>2</sub>(1/4) &asymp; 0,81 бита.</div>
+  <p>В задачах ЕГЭ и ОГЭ вероятностный подход встречается в двух типичных формулировках: «неравновероятные события» — тогда применяют формулу Шеннона полностью, либо «два исхода с вероятностями p и 1&minus;p» — тогда количество информации конкретного события вычисляют как &minus;log<sub>2</sub>p. Чаще всего в школьных задачах ограничиваются целыми битами, поэтому вероятности специально подбираются так, чтобы логарифм давал целое значение.</p>
+</div>
+<div class="section-nav"><a href="#s6">Далее: Дискретное представление &rarr;</a><a href="#s4">&larr; Назад</a></div>
+
+<!-- s6 -->
+<h2 class="section-title" id="s6">6. Дискретное представление информации</h2>
+<div class="def-block"><span class="term">Дискретное представление информации</span> Представление любых данных (текста, чисел, звука, изображения) в виде конечного набора отдельных элементов — обычно двоичных кодов. Компьютер обрабатывает только дискретный поток нулей и единиц, поэтому всё остальное должно быть предварительно оцифровано.</div>
+<div class="card">
+  <p>Универсальность двоичного представления — фундаментальное свойство современных компьютеров. Любое содержание сводится к последовательности бит, и способ кодирования определяет, какой объект перед нами: текст, целое число, звук или картинка. Одно и то же значение «01000001» может быть латинской буквой A в кодировке ASCII, числом 65 или кодом точки изображения — всё зависит от того, как интерпретирует данные программа.</p>
+  <p>Информационные объекты различных видов хранятся и передаются в разных форматах, но все они используют общие принципы кодирования. Текст кодируется посимвольно: каждому символу ставится в соответствие код. В традиционной кодировке ASCII для символа отводится один байт (до 256 символов), в современном стандарте Unicode используется переменная длина — чаще всего 1, 2 или 4 байта на символ, что позволяет кодировать все письменности мира. Изображение кодируется попиксельно: каждый пиксель (точка) имеет цвет, заданный числом бит (глубиной цвета). Звук дискретизируется: непрерывный сигнал измеряется через равные промежутки времени с заданной точностью (разрядностью).</p>
+  <div class="formula"><span class="lbl">Формула 5 — информационный объём растрового изображения</span>I = X &times; Y &times; b</div>
+  <p>X — ширина в пикселях, Y — высота в пикселях, b — глубина цвета в битах на пиксель. Палитра и глубина цвета связаны формулой N = 2<sup>b</sup>, где N — количество цветов.</p>
+  <div class="formula"><span class="lbl">Формула 6 — информационный объём звукового файла</span>I = &nu; &times; i &times; t</div>
+  <p>&nu; — частота дискретизации в герцах (сколько измерений в секунду), i — глубина кодирования в битах, t — длительность звучания в секундах. Для стереозаписи результат умножают на два (число каналов).</p>
+  <div class="info-box cyan"><strong>Пример:</strong> изображение 128 &times; 128 пикселей с палитрой 256 цветов (глубина 8 бит) занимает 128 &times; 128 &times; 8 = 131 072 бита = 16 384 байта = 16 Кбайт.</div>
+</div>
+<div class="section-nav"><a href="#s7">Далее: Передача и хранение &rarr;</a><a href="#s5">&larr; Назад</a></div>
+
+<!-- s7 -->
+<h2 class="section-title" id="s7">7. Передача и хранение информации. Объёмы носителей</h2>
+<div class="card">
+  <p>Передача информации происходит по каналу связи. Ключевая характеристика канала — его <span class="key">пропускная способность</span> (скорость передачи), измеряемая в битах в секунду и кратных единицах: килобитах в секунду, мегабитах в секунду, гигабитах в секунду. Важно не путать их с байтами: 1 Мбит/с — это один миллион бит в секунду, тогда как 1 Мбайт = 2<sup>20</sup> байт = 8 388 608 бит.</p>
+  <div class="formula"><span class="lbl">Формула 7 — объём переданных данных</span>I = v &times; t</div>
+  <p>v — скорость передачи в битах в секунду, t — время в секундах. Из этой формулы выражаются и время, и скорость: t = I / v, v = I / t. Главная опасность при решении таких задач — единицы измерения: прежде чем подставлять числа в формулу, все значения приводят к битам и секундам.</p>
+  <div class="info-box"><strong>Пример:</strong> скорость 128 Кбит/с = 131 072 бит/с. Время передачи файла объёмом 512 Кбайт = 4 194 304 бита: t = 4 194 304 / 131 072 = 32 секунды.</div>
+  <p>Хранение информации связано с определением вместимости носителей. Объём типичных носителей: компакт-диск — 700 Мбайт, DVD — 4,7 Гбайт, флеш-накопители — от 8 Гбайт до 2 Тбайт, жёсткие диски — от 500 Гбайт до десятков терабайт. Задачи на «определение объёмов носителей» сводятся к делению: вычисляют, сколько объектов (документов, фотографий, треков) поместится на носитель, либо, наоборот, какой минимальный носитель нужен для заданного набора данных. При этом помнят, что ёмкость рассчитывается в одних единицах и все значения переводятся к общему знаменателю.</p>
+  <p>Практическое правило, которое стоит записать: <span class="key">объём вычисляем в битах, переводим в байты делением на 8, затем в кратные единицы делением на 1024</span>. Алгоритм решения любого такого упражнения единый — привести всё к битам, выполнить арифметику, аккуратно вернуться к нужной единице.</p>
+</div>
+<div class="section-nav"><a href="#s8">Далее: Архив информации &rarr;</a><a href="#s6">&larr; Назад</a></div>
+
+<!-- s8 -->
+<h2 class="section-title" id="s8">8. Архив информации: сжатие данных</h2>
+<div class="def-block"><span class="term">Архивация (сжатие данных)</span> Процесс уменьшения объёма информации с помощью специальных алгоритмов. Может быть без потерь (исходные данные восстанавливаются точно) и с потерями (допускается частичная утрата деталей ради сильного сжатия).</div>
+<div class="card">
+  <p>Необходимость сжатия возникает тогда, когда данных больше, чем позволяет место на носителе или скорость канала. <span class="key">Сжатие без потерь</span> применяется для текста, программ, баз данных и архивов документов: алгоритмы (RLE, Хаффман, LZW и их современные реализации) устраняют избыточность, но каждый байт восстанавливается точно. <span class="key">Сжатие с потерями</span> применяется к мультимедиа — изображениям (JPEG), звуку (MP3), видео (H.264/H.265): удаляются детали, несущественные для восприятия человеком.</p>
+  <p>Количественная характеристика архивации — <span class="key">коэффициент сжатия</span> — показывает, во сколько раз уменьшился объём данных:</p>
+  <div class="formula"><span class="lbl">Формула 8 — коэффициент сжатия</span>k = V<sub>исходный</sub> / V<sub>сжатый</sub></div>
+  <p>Если коэффициент больше единицы, сжатие уменьшило объём; если равен единице — данные несжимаемы; если меньше единицы — «сжатие» увеличило объём. Чем выше коэффициент, тем эффективнее архивация. В обратном направлении по формуле восстанавливают исходный объём: V<sub>исходный</sub> = k &times; V<sub>сжатый</sub>.</p>
+  <div class="info-box purple"><strong>Пример:</strong> исходный файл 60 Мбайт, после сжатия 15 Мбайт. Коэффициент k = 60 / 15 = 4. То есть данные сжались в четыре раза, и на носитель в 30 Мбайт поместятся две сжатые копии файла, тогда как исходный файл не поместился бы ни разу.</div>
+  <p>На практике разработчики используют архивацию для резервных копий баз данных, логов и журналов приложений. Понимание коэффициента сжатия позволяет планировать место под хранение и время передачи архивов. Особенно важна оценка эффективности, когда архивируются данные с разной степенью сжимаемости: текстовые логи сжимаются в 10–20 раз, уже сжатые изображения и видео — почти несильно.</p>
+</div>
+<div class="section-nav"><a href="#s9">Далее: Типовые задачи ЕГЭ/ОГЭ &rarr;</a><a href="#s7">&larr; Назад</a></div>
+
+<!-- s9 -->
+<h2 class="section-title" id="s9">9. Типовые задачи ЕГЭ и ОГЭ: разбор по типам</h2>
+<div class="card">
+  <p>Задачи на измерение информации встречаются в КИМ (контрольно-измерительных материалах) ОГЭ и ЕГЭ по информатике каждый год. Ниже разобраны основные типы: к каждому дан алгоритм решения и формула. После каждого условия сначала попробуйте решить задачу самостоятельно, затем раскройте ответ и сравните ход решения.</p>
+</div>
+
+<div class="type-block">
+  <div class="type-title"><span class="n">Тип 1</span> Объём текстового сообщения (алфавитный подход)</div>
+  <div class="answer-block open">
+    <button class="answer-trigger">Задача: объём текста по мощности алфавита <span class="arrow">&#9660;</span></button>
+    <div class="answer-body"><div class="answer-body-inner">
+      <p><strong>Условие (ОГЭ).</strong> Текст набран в алфавите мощностью 64 символа и содержит 150 символов. Каков информационный объём сообщения в байтах?</p>
+      <div class="solution">
+        <span class="step"><strong>Шаг 1.</strong> Находим вес одного символа: 64 = 2<sup>6</sup>, значит i = 6 бит.</span>
+        <span class="step"><strong>Шаг 2.</strong> Объём в битах: I = K &times; i = 150 &times; 6 = 900 бит.</span>
+        <span class="step"><strong>Шаг 3.</strong> Переводим в байты: 900 / 8 = 112,5 байта. Округлять не нужно — ответ записываем с дробной частью.</span>
+        <span class="step"><strong>Ответ: 112,5 байта.</strong> (В большинстве экзаменационных вариантов числа подобраны так, что результат целый.)</span>
+      </div>
+      <p><strong>Формулы:</strong> N = 2<sup>i</sup>; I = K &times; i.</p>
+      <div class="hint"><strong>Критерий:</strong> задача решена, если объём переведён в биты, затем в байты делением на 8.</div>
+    </div></div>
+  </div>
+  <div class="answer-block">
+    <button class="answer-trigger">Задача: минимально возможная битность по количеству символов <span class="arrow">&#9660;</span></button>
+    <div class="answer-body"><div class="answer-body-inner">
+      <p><strong>Условие (ЕГЭ).</strong> Для кодирования 256-символьного алфавита выделяется целое число бит на символ. Текст содержит 40 символов. Найдите объём сообщения в битах.</p>
+      <div class="solution">
+        <span class="step"><strong>Шаг 1.</strong> Мощность алфавита N = 256 = 2<sup>8</sup>, значит на символ нужно 8 бит.</span>
+        <span class="step"><strong>Шаг 2.</strong> Объём: I = 40 &times; 8 = 320 бит.</span>
+        <span class="step"><strong>Ответ: 320 бит.</strong></span>
+      </div>
+      <div class="hint"><strong>Совет:</strong> если мощность не является степенью двойки, берут ближайшую большую степень (например, для N = 33 понадобятся 6 бит, так как 2<sup>5</sup> = 32 &lt; 33).</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="type-block">
+  <div class="type-title"><span class="n">Тип 2</span> Содержательный подход: количество бит при равновероятных событиях</div>
+  <div class="answer-block">
+    <button class="answer-trigger">Задача: логарифм от числа вариантов <span class="arrow">&#9660;</span></button>
+    <div class="answer-body"><div class="answer-body-inner">
+      <p><strong>Условие (ОГЭ).</strong> Из 128 равновероятных сообщений было получено одно. Сколько бит информации оно несёт?</p>
+      <div class="solution">
+        <span class="step"><strong>Шаг 1.</strong> Число равновероятных вариантов N = 128 = 2<sup>7</sup>.</span>
+        <span class="step"><strong>Шаг 2.</strong> i = log<sub>2</sub>128 = 7 бит.</span>
+        <span class="step"><strong>Ответ: 7 бит.</strong></span>
+      </div>
+      <p><strong>Формулы:</strong> N = 2<sup>i</sup>, i = log<sub>2</sub>N.</p>
+    </div></div>
+  </div>
+</div>
+
+<div class="type-block">
+  <div class="type-title"><span class="n">Тип 3</span> Изображения: глубина цвета и объём файла</div>
+  <div class="answer-block">
+    <button class="answer-trigger">Задача: палитра и размер файла <span class="arrow">&#9660;</span></button>
+    <div class="answer-body"><div class="answer-body-inner">
+      <p><strong>Условие (ЕГЭ).</strong> Рисунок размером 1024 &times; 512 пикселей сохранён в формате с палитрой 16 777 216 цветов. Найдите объём файла в мегабайтах.</p>
+      <div class="solution">
+        <span class="step"><strong>Шаг 1.</strong> Палитра 16 777 216 = 2<sup>24</sup>, глубина цвета b = 24 бита на пиксель.</span>
+        <span class="step"><strong>Шаг 2.</strong> Число пикселей: 1024 &times; 512 = 2<sup>10</sup> &times; 2<sup>9</sup> = 2<sup>19</sup>.</span>
+        <span class="step"><strong>Шаг 3.</strong> Объём в битах: I = 2<sup>19</sup> &times; 24 = 2<sup>19</sup> &times; 3 &times; 8 = 3 &times; 2<sup>22</sup> бит.</span>
+        <span class="step"><strong>Шаг 4.</strong> В мегабайтах: 3 &times; 2<sup>22</sup> / 8 / 2<sup>20</sup> = 3 &times; 2<sup>22</sup> / 2<sup>23</sup> = 3 &times; 1/2 = 1,5 Мбайт.</span>
+        <span class="step"><strong>Ответ: 1,5 Мбайт.</strong></span>
+      </div>
+      <p><strong>Формулы:</strong> N = 2<sup>b</sup>; I = X &times; Y &times; b.</p>
+    </div></div>
+  </div>
+</div>
+
+<div class="type-block">
+  <div class="type-title"><span class="n">Тип 4</span> Звук: дискретизация</div>
+  <div class="answer-block">
+    <button class="answer-trigger">Задача: частота, глубина, время <span class="arrow">&#9660;</span></button>
+    <div class="answer-body"><div class="answer-body-inner">
+      <p><strong>Условие (ЕГЭ).</strong> Звук длительностью 2 минуты записан с частотой 44 100 Гц, глубиной 16 бит, в стерео. Найдите объём файла в Мбайтах (результат округлите до целого).</p>
+      <div class="solution">
+        <span class="step"><strong>Шаг 1.</strong> Время: t = 2 мин = 120 с.</span>
+        <span class="step"><strong>Шаг 2.</strong> Частота дискретизации &nu; = 44 100 Гц.</span>
+        <span class="step"><strong>Шаг 3.</strong> Монофонический объём: 44 100 &times; 16 &times; 120 бит.</span>
+        <span class="step"><strong>Шаг 4.</strong> Стерео — умножаем на 2: I = 44 100 &times; 16 &times; 120 &times; 2 бит.</span>
+        <span class="step"><strong>Шаг 5.</strong> Перевод: 44 100 &times; 16 &times; 120 &times; 2 / 8 = 21 168 000 байт &asymp; 20,19 Мбайт &asymp; 20 Мбайт.</span>
+        <span class="step"><strong>Ответ: 20 Мбайт.</strong></span>
+      </div>
+      <p><strong>Формулы:</strong> I = &nu; &times; i &times; t (для стерео &times; 2).</p>
+    </div></div>
+  </div>
+</div>
+
+<div class="type-block">
+  <div class="type-title"><span class="n">Тип 5</span> Скорость передачи данных</div>
+  <div class="answer-block">
+    <button class="answer-trigger">Задача: время передачи файла <span class="arrow">&#9660;</span></button>
+    <div class="answer-body"><div class="answer-body-inner">
+      <p><strong>Условие (ОГЭ).</strong> Файл объёмом 2 Мбайта передаётся по каналу со скоростью 1 Мбит/с. Сколько секунд длится передача?</p>
+      <div class="solution">
+        <span class="step"><strong>Шаг 1.</strong> Объём в битах: 2 Мбайта = 2 &times; 2<sup>20</sup> байт = 2 &times; 2<sup>23</sup> бит = 2<sup>24</sup> бит = 16 777 216 бит.</span>
+        <span class="step"><strong>Шаг 2.</strong> Скорость: 1 Мбит/с = 2<sup>20</sup> бит/с = 1 048 576 бит/с.</span>
+        <span class="step"><strong>Шаг 3.</strong> Время: t = I / v = 2<sup>24</sup> / 2<sup>20</sup> = 2<sup>4</sup> = 16 секунд.</span>
+        <span class="step"><strong>Ответ: 16 секунд.</strong></span>
+      </div>
+      <p><strong>Формулы:</strong> I = v &times; t, откуда t = I / v.</p>
+      <div class="hint"><strong>Распространённая ошибка:</strong> путают мегабайты и мегабиты. Переводите всегда в биты.</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="type-block">
+  <div class="type-title"><span class="n">Тип 6</span> Вероятностный подход: два неравновероятных события</div>
+  <div class="answer-block">
+    <button class="answer-trigger">Задача: информация о неравновероятном событии <span class="arrow">&#9660;</span></button>
+    <div class="answer-body"><div class="answer-body-inner">
+      <p><strong>Условие.</strong> В корзине 1 белый и 7 чёрных шаров. Сколько бит информации несёт сообщение, что из корзины достали белый шар?</p>
+      <div class="solution">
+        <span class="step"><strong>Шаг 1.</strong> Вероятность белого шара: p = 1/8.</span>
+        <span class="step"><strong>Шаг 2.</strong> Количество информации одного конкретного события: i = &minus;log<sub>2</sub>p = &minus;log<sub>2</sub>(1/8) = log<sub>2</sub>8 = 3 бита.</span>
+        <span class="step"><strong>Ответ: 3 бита.</strong></span>
+      </div>
+      <p><strong>Формула:</strong> i = &minus;log<sub>2</sub>p (для одного события).</p>
+    </div></div>
+  </div>
+</div>
+
+<div class="type-block">
+  <div class="type-title"><span class="n">Тип 7</span> Носители и архивация</div>
+  <div class="answer-block">
+    <button class="answer-trigger">Задача: вместимость носителя и коэффициент сжатия <span class="arrow">&#9660;</span></button>
+    <div class="answer-body"><div class="answer-body-inner">
+      <p><strong>Условие.</strong> Текстовый документ занимает 3 Мбайта. Архиватор сжимает его с коэффициентом 6. Сколько таких сжатых документов поместится на флеш-накопителе объёмом 4,5 Гбайта? Сколько времени займёт передача всех сжатых документов по каналу 2 Мбит/с?</p>
+      <div class="solution">
+        <span class="step"><strong>Шаг 1.</strong> Сжатый размер одного документа: 3 / 6 = 0,5 Мбайта.</span>
+        <span class="step"><strong>Шаг 2.</strong> Ёмкость носителя в Мбайтах: 4,5 Гбайта = 4,5 &times; 1024 = 4608 Мбайт.</span>
+        <span class="step"><strong>Шаг 3.</strong> Число документов: 4608 / 0,5 = 9216.</span>
+        <span class="step"><strong>Шаг 4.</strong> Объём всех сжатых документов: 9216 &times; 0,5 = 4608 Мбайт = 4608 &times; 2<sup>23</sup> бит.</span>
+        <span class="step"><strong>Шаг 5.</strong> Время: 4608 &times; 2<sup>23</sup> / (2 &times; 2<sup>20</sup>) = 4608 &times; 2<sup>3</sup> / 2 = 4608 &times; 4 = 18 432 секунды &asymp; 5,12 часа.</span>
+        <span class="step"><strong>Ответы:</strong> 9216 документов; ~18 432 секунды (≈ 5 часов 7 минут).</span>
+      </div>
+      <p><strong>Формулы:</strong> k = V<sub>исх</sub>/V<sub>сж</sub>; t = I/v.</p>
+    </div></div>
+  </div>
+</div>
+
+<div class="section-nav"><a href="#s10">Далее: Контрольные вопросы &rarr;</a><a href="#s8">&larr; Назад</a></div>
+
+<!-- s10 -->
+<h2 class="section-title" id="s10">10. Контрольные вопросы</h2>
+<div class="card">
+  <p style="margin-bottom:.6rem">Ответьте устно на следующие вопросы:</p>
+  <div class="qlist">
+    <div class="q">Что такое бит и почему он принимает ровно два значения?</div>
+    <div class="q">Сколько бит в байте, почему для кодирования символов в ASCII достаточно одного байта?</div>
+    <div class="q">Запишите формулу связи мощности алфавита и информационного веса символа. Что она означает?</div>
+    <div class="q">В чём суть содержательного подхода к измерению информации?</div>
+    <div class="q">Почему формула Шеннона является обобщением формулы Хартли?</div>
+    <div class="q">Что такое глубина цвета и как она связана с количеством цветов палитры?</div>
+    <div class="q">По какой формуле вычисляется объём звукового файла? Что означает каждый множитель?</div>
+    <div class="q">Почему при вычислении времени передачи данных необходимо переводить величины в биты?</div>
+    <div class="q">Что такое коэффициент сжатия и какие два вида сжатия вы знаете?</div>
+  </div>
+</div>
+
+<!-- s11 -->
+<h2 class="section-title" id="s11">11. Задачи для самостоятельной работы</h2>
+<div class="card">
+  <p>Решите задачи, используя формулы из разделов 3–8. Подробные решения сдаются преподавателю на проверку; для самопроверки сравните свои расчёты с ответами, которые объявит преподаватель на занятии.</p>
+</div>
+<div class="task-list">
+
+  <div class="task-card">
+    <div class="task-title">Задача 1 (алфавитный подход)</div>
+    <div class="task-body">
+      <p>Сообщение записано в алфавите мощностью 128 символов и содержит 210 символов. Вычислите информационный объём сообщения в битах и в байтах.</p>
+    </div>
+    <div class="task-meta"><span class="badge level">ОГЭ</span><span class="badge">базовый</span></div>
+  </div>
+
+  <div class="task-card">
+    <div class="task-title">Задача 2 (содержательный подход)</div>
+    <div class="task-body">
+      <p>В лотерее участвуют 64 билета, розыгрыш равновероятен. Сколько бит информации несёт сообщение о том, что выигрышным оказался один конкретный билет?</p>
+    </div>
+    <div class="task-meta"><span class="badge level">ОГЭ</span><span class="badge">базовый</span></div>
+  </div>
+
+  <div class="task-card">
+    <div class="task-title">Задача 3 (вероятностный подход)</div>
+    <div class="task-body">
+      <p>В мешке лежат 15 чёрных и 1 белый шар. Сколько бит информации несёт сообщение о том, что достали белый шар? Сколько бит — о том, что достали чёрный шар?</p>
+    </div>
+    <div class="task-meta"><span class="badge level">ЕГЭ</span><span class="badge">средний</span></div>
+  </div>
+
+  <div class="task-card">
+    <div class="task-title">Задача 4 (изображение)</div>
+    <div class="task-body">
+      <p>Растровое изображение размером 2048 &times; 1024 пикселя сохранено с палитрой 4 294 967 296 цветов. Каков объём файла в мегабайтах?</p>
+    </div>
+    <div class="task-meta"><span class="badge level">ЕГЭ</span><span class="badge">средний</span></div>
+  </div>
+
+  <div class="task-card">
+    <div class="task-title">Задача 5 (звук)</div>
+    <div class="task-body">
+      <p>Стереозапись длительностью 3 минуты сделана с частотой дискретизации 22 050 Гц и глубиной 16 бит. Определите объём файла в килобайтах.</p>
+    </div>
+    <div class="task-meta"><span class="badge level">ЕГЭ</span><span class="badge">средний</span></div>
+  </div>
+
+  <div class="task-card">
+    <div class="task-title">Задача 6 (передача данных)</div>
+    <div class="task-body">
+      <p>Файл объёмом 6 Мбайт передаётся по каналу со скоростью 4 Мбит/с. Сколько секунд займёт передача? Скорость задана в битах в секунду.</p>
+    </div>
+    <div class="task-meta"><span class="badge level">ОГЭ</span><span class="badge">базовый</span></div>
+  </div>
+
+  <div class="task-card">
+    <div class="task-title">Задача 7 (носители и архивация)</div>
+    <div class="task-body">
+      <p>Архив программ занимает 100 Мбайт до сжатия и 25 Мбайт после. Определите коэффициент сжатия. Сколько таких архивов поместится на DVD объёмом 4,7 Гбайта? Достаточно ли этого места, если архивов 200?</p>
+    </div>
+    <div class="task-meta"><span class="badge level">комбинированная</span><span class="badge">повышенный</span></div>
+  </div>
+
+</div>
+
+</main>
+<footer class="page-footer">09.02.07 Информационные системы и программирование · Тема 1.2 &copy; 2026</footer>
+<script>
+(function(){var b=document.getElementById('themeToggle'),d=document.documentElement;function e(v){d.setAttribute('data-theme',v);localStorage.setItem('portal-theme-v2',v);b.innerHTML=v==='dark'?'<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.59 2.06-2.48 3.56-4.74 3.56-2.76 0-5-2.24-5-5 0-2.26 1.5-4.15 3.56-4.74C12.92 3.04 12.46 3 12 3z"/></svg>':'<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.34 0 .68-.02 1.01-.06C9.56 20.42 7 16.76 7 12s2.56-8.42 6.01-9.94C12.68 2.02 12.34 2 12 2z"/></svg>'};b.addEventListener('click',function(){var cur=d.getAttribute('data-theme');e(cur==='dark'?'light':'dark')});var saved=localStorage.getItem('portal-theme-v2');e(saved?saved:'dark');document.querySelectorAll('.answer-trigger').forEach(function(t){t.addEventListener('click',function(){var a=t.closest('.answer-block');if(a)a.classList.toggle('open')})});document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(ev){ev.preventDefault();var tg=document.querySelector(a.getAttribute('href'));if(tg)tg.scrollIntoView({behavior:'smooth',block:'start'})})});})();
+</script>
+</body>
+</html>
